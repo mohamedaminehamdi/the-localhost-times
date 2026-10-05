@@ -1,8 +1,0 @@
-# Landing page + public demo edition (a made-up reader), printed locally with Gemma 4.
-# Real editions never touch a server.
-services:
-  - type: web
-    name: the-localhost-times
-    runtime: static
-    buildCommand: echo "site/ is printed locally by localhost-times --demo"
-    staticPublishPath: ./site

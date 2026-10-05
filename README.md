@@ -12,7 +12,7 @@ Then an open-weight model **running on your own laptop** (Gemma 4 via Ollama) wr
 
 A friend asked for it. They wanted their whole day to fit on one page, without handing their inbox to someone else's cloud.
 
-**Live demo** (a made-up reader, Sam): https://the-localhost-times.onrender.com · [demo edition](https://the-localhost-times.onrender.com/demo/)
+**Live demo** (a made-up reader, Sam): https://mohamedaminehamdi.github.io/the-localhost-times/ · [demo edition](https://mohamedaminehamdi.github.io/the-localhost-times/demo/)
 
 ## How it works
 
@@ -36,7 +36,7 @@ uv run localhost-times                              # print today's edition
 ```
 
 The edition lands in `editions/<date>/` (open `index.html`) and is delivered wherever you configured.
-Prefer clicking? The [landing page](https://the-localhost-times.onrender.com) has a `.env` builder that runs entirely in your browser.
+Prefer clicking? The [landing page](https://mohamedaminehamdi.github.io/the-localhost-times/) has a `.env` builder that runs entirely in your browser.
 
 Print it every morning at 7:
 
@@ -86,7 +86,7 @@ localhost_times/
   render.py    flip-through web page + email version
   deliver.py   email, Telegram, Slack, Discord, ntfy
   net.py       small stdlib HTTP helpers
-site/          landing page + demo edition (deployed on Render)
+site/          landing page + demo edition (GitHub Pages)
 tests/         offline tests: `uv run pytest`
 ```
 
@@ -98,6 +98,6 @@ New integrations are the best way in, usually one function and one line. See [CO
 
 ## Built with
 
-[Gemma 4](https://ai.google.dev/gemma) · [Ollama](https://ollama.com) · [ElevenLabs](https://elevenlabs.io) · [Render](https://render.com) · [StPageFlip](https://github.com/Nodlik/StPageFlip) · [Open-Meteo](https://open-meteo.com) · [Entire](https://entire.io)
+[Gemma 4](https://ai.google.dev/gemma) · [Ollama](https://ollama.com) · [ElevenLabs](https://elevenlabs.io) · [StPageFlip](https://github.com/Nodlik/StPageFlip) · [Open-Meteo](https://open-meteo.com) · [Entire](https://entire.io)
 
 Built for a friend, for the [DEV Hacktoberfest 2026 Weekend Challenge](https://dev.to/challenges/hacktoberfest-weekend-2026-10-01). MIT licensed.
