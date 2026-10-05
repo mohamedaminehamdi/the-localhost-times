@@ -52,6 +52,14 @@ def test_render_escapes_and_email_has_no_script():
     assert 'src="edition.mp3"' in web and "Pay rent" in mail
 
 
+def test_feed_links_only_allow_http():
+    assert render.safe_href("javascript:alert(1)") == "#"
+    assert render.safe_href("https://example.com/a") == "https://example.com/a"
+    ed = {**EDITION, "news": [{"link": "javascript:alert(1)", "title": "t", "source": "s", "summary": "x"}]}
+    page = render.web(render.pages("Sam", DAY, ed, {}, "b"))
+    assert "javascript:" not in page
+
+
 def test_broken_source_is_skipped(monkeypatch):
     def boom(env, day):
         raise OSError("imap down")

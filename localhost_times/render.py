@@ -1,5 +1,6 @@
 """Print the edition: a flip-through newspaper for the browser, one scrolling page for email."""
 import html
+from urllib.parse import urlparse
 
 e = html.escape
 MOTTO = "All the news that's fit to print.<br>Printed on your machine."
@@ -60,6 +61,11 @@ if (window.St && !calm && innerWidth >= 760) {
 """
 
 
+def safe_href(url):
+    """Feed links are untrusted: only http(s) may become a link (no javascript: URLs)."""
+    return url if urlparse(url or "").scheme.lower() in ("http", "https") else "#"
+
+
 def _list(items):
     rows = "".join(f"<li>{x}</li>" for x in items)
     return f"<ul>{rows or '<li class=quiet>Nothing here. Enjoy it.</li>'}</ul>"
@@ -79,7 +85,7 @@ def pages(name, day, ed, inputs, byline):
     schedule = [f"<b>{e(ev['time'])}</b> {e(ev['title'])}" + (f" <span class=src>{e(ev['where'])}</span>" if ev.get("where") else "")
                 for ev in inputs.get("calendar", [])]
     replies = [f"<b>{e(r['from'].split('<')[0].strip(' \"') or r['from'])}</b>: {e(r['about'])}<br><span class=src>{e(r['why'])}</span>" for r in ed["needs_reply"]]
-    world = [f"<a href=\"{e(n['link'])}\">{e(n['title'])}</a> <span class=src>{e(n['source'])}</span><br>{e(n['summary'])}"
+    world = [f"<a href=\"{e(safe_href(n['link']))}\" rel=\"noopener noreferrer\">{e(n['title'])}</a> <span class=src>{e(n['source'])}</span><br>{e(n['summary'])}"
              for n in ed["news"]]
     front = f"""<header class=mast>
 <div class=ears><span>{e(weather_line(inputs))}</span><span>{MOTTO}</span></div>
