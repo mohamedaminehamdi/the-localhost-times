@@ -1,8 +1,8 @@
-# Public demo: a static edition for a made-up reader, generated locally with Gemma 4.
+# Landing page + public demo edition (a made-up reader), printed locally with Gemma 4.
 # Real editions never touch a server.
 services:
   - type: web
-    name: the-daily-me
+    name: the-localhost-times
     runtime: static
-    buildCommand: echo "site/ is generated locally by daily_me.py --demo"
+    buildCommand: echo "site/ is printed locally by localhost-times --demo"
     staticPublishPath: ./site

@@ -1,0 +1,65 @@
+{
+  "headline": "Bank Security Alert Demands Immediate Attention This Morning",
+  "lede": "The overcast skies in Lyon suggest a quiet start to the week. Today requires immediate action regarding your online banking security.",
+  "must_do_today": [
+    "Lock card in app immediately due to new sign-in alert",
+    "Pay rent",
+    "Send Northwind the updated invoice",
+    "Send dark-background logo and updated invoice to Priya Shah",
+    "Confirm plumber visit for Tuesday",
+    "Reply C to Bright Dental appointment reminder"
+  ],
+  "needs_reply": [
+    {
+      "from": "Priya Shah <priya@northwind.example>",
+      "about": "Re: Rebrand v3 - can we see the dark logo before 4pm?",
+      "why": "Board needs dark logo and updated invoice before 4pm"
+    },
+    {
+      "from": "Mom <mom@family.example>",
+      "about": "Sunday lunch?",
+      "why": "Need to let Mom know by Wednesday about next Sunday's visit"
+    }
+  ],
+  "fyi": [
+    "GitHub has opened 2 pull requests for security updates on portfolio",
+    "SkyHop Airlines check-in is open for Lisbon flight on Wednesday",
+    "Design Weekly features autumn fonts and colour palettes",
+    "ShopMart sale ends Tuesday at midnight"
+  ],
+  "news": [
+    {
+      "topic": "top",
+      "title": "Cornell University to take ‘serious look’ at fraternities after rape allegations",
+      "source": "The Guardian",
+      "link": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQY0NxOGtWRDBIZDRNVHEyU2stQnoyYnJwNVR0Si1RN1BKbW9qVmVxODBwSVV4RFdRNkJldHpMSURFZkE3OUIyWEJSY3puemF1b1B0SF95SHM4ZHgwdm9IYnhiaVA3WVRfX2FqX0N2WmI1MEVsbzR3eXRyM1ZCNWxIRXR6QmViaTVacXhJeTZUT2VJNVpteDhodk04VnlKY2poT0pfZXBibVV6aDRVUlhjVWtsNGtmb0lRWEdNNzZKOA?oc=5",
+      "n": 1,
+      "summary": "Cornell University is taking a serious look at fraternities following rape allegations."
+    },
+    {
+      "topic": "top",
+      "title": "Brazil election headed to runoff, projection shows, as Bolsonaro lead narrows",
+      "source": "Reuters",
+      "link": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPTzYxcENTQ3M0VnFWR3h0cVF2TkRtc2Rlci13bDE5dnZXMENGLWVPTzdKX3RpRXBvZGJFcEo3d2tmelg2QmN4Q1lkNGhnN1luQ3FCdnRMeUxlTHlTeGswVzNjWVBzdVI2ZWttdm5HR3REQ3lSd3JqSUltVTRuTTY2dWdVTFVsRUNyZGVTVDBkY2E1M3poNG8tNktZMjNtNWliR2dlRkxR?oc=5",
+      "n": 2,
+      "summary": "Brazil's election is heading to a runoff as Bolsonaro's lead narrows."
+    },
+    {
+      "topic": "top",
+      "title": "How was Flydubai co-pilot cleared despite being deemed a security risk?",
+      "source": "Al Jazeera",
+      "link": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOaFRDaFpIUFI1T1UxN3JrZ1RfNHVMVHJFYTMwaGs3ZXRnQU5UNHNWRFRBZ0h4RnFudktFdWQtSU9GeDJyd3NVLTJmNE9CbkRMYlVSX3diOEhjVEJyNVpBOS0wdXBfQ3AyRkJRVkJrelNrWFlOSWhKY2Q2YjJEaE4zNFI4SVFGdGZiUkZfVTAwZmRGNG1kRm5tVkRQT2trYlNNLWFscjdmWXVsS2VncTR4cdIBtgFBVV95cUxNYzg2X0VVQ3FrdjNsMlM2bzE0b0ZRT2NSY29hRjNFYkpDZTkzRjRfWm1hY0FTSE5WZjl0SW81VEw2VGpud2VpNWJ2TFV3SWZYYTJMS3JBMHY3RkdSaTZtbFdKWXFCMzdwdmVQSkw5Mms4NFZVNEFaRXNZbEZHNHlMU09CSkQ1VDhoeW4xTnZnbnNHUnhBZFVlOE1GMmN4aWZGaDhWU0ZVQW1lckxMQ25rUU9VbS1OZw?oc=5",
+      "n": 3,
+      "summary": "Al Jazeera reported on how a Flydubai co-pilot was cleared despite security concerns."
+    },
+    {
+      "topic": "design",
+      "title": "Dartmouth builds next-gen gamers with new game design course",
+      "source": "Valley News",
+      "link": "https://news.google.com/rss/articles/CBMia0FVX3lxTFA2N3RQX0l0V2lLbUtsdFFFb2NiTGVvdDFqUU9UWERySHpTZU9IR2paNG5YYjRFei1zU1RGaG5qanRRc1lnU05Yay1qNG5GVFpCYkRNSjNVRjd1ZUQ4SnMwTjZocnNhVGp5d3RJ?oc=5",
+      "n": 5,
+      "summary": "Dartmouth is building next-generation gamers with a new game design course."
+    }
+  ],
+  "podcast_script": "Good morning Sam, it is Monday, October 5, 2026, and the weather in Lyon is overcast with a high of 26 and a low of 16. Today is a day that starts with a very important security matter. You have a few things that absolutely must get done this morning. First, you need to lock your card in the app immediately because the bank noticed a new sign-in from France. After that, you must pay your rent, which is due today. Then, you need to send Northwind the updated invoice, and you also need to send Priya Shah the dark-background logo along with that updated invoice before four o'clock. Don't forget to confirm that someone will be home for the plumber visit on Tuesday. Finally, you should reply C to Bright Dental to confirm your Thursday appointment. There are a couple of emails waiting for a real person reply. Priya Shah needs the logo and invoice, and your Mom is waiting for you to let her know about next Sunday's lunch. For things you can put aside for now, GitHub has security updates waiting, and your flight check-in for Lisbon is open. Design Weekly has some nice autumn font ideas if you want to browse later. The news this morning includes Cornell University taking a serious look at fraternities after some allegations. Also, Brazil's election is heading to a runoff as the lead gets tighter. Al Jazeera covered how a Flydubai co-pilot was cleared despite security concerns. And Dartmouth is building next-generation gamers with a new game design course. I hope your day is productive, Sam. Have a good one."
+}

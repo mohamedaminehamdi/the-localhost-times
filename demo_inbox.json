@@ -1,22 +1,121 @@
 {
   "name": "Sam",
+  "city": "Lyon",
+  "topics": "top,design,climbing",
+  "tasks": [
+    {
+      "from": "Todoist",
+      "task": "Send Northwind the updated invoice",
+      "due": "today"
+    },
+    {
+      "from": "Todoist",
+      "task": "Buy a birthday card for Lina",
+      "due": "overdue"
+    },
+    {
+      "from": "GitHub",
+      "task": "sam/portfolio: Bump next from 14.2.3 to 14.2.35",
+      "due": "review requested"
+    }
+  ],
   "calendar": [
-    {"time": "all day", "title": "Rent due", "where": ""},
-    {"time": "09:30", "title": "Team standup", "where": "Google Meet"},
-    {"time": "12:30", "title": "Lunch with Lina", "where": "Cafe Verde"},
-    {"time": "16:00", "title": "Client call: Northwind rebrand review", "where": "Zoom"},
-    {"time": "19:00", "title": "Climbing gym", "where": "Boulder Bar"}
+    {
+      "time": "all day",
+      "title": "Rent due",
+      "where": ""
+    },
+    {
+      "time": "09:30",
+      "title": "Team standup",
+      "where": "Google Meet"
+    },
+    {
+      "time": "12:30",
+      "title": "Lunch with Lina",
+      "where": "Cafe Verde"
+    },
+    {
+      "time": "16:00",
+      "title": "Client call: Northwind rebrand review",
+      "where": "Zoom"
+    },
+    {
+      "time": "19:00",
+      "title": "Climbing gym",
+      "where": "Boulder Bar"
+    }
   ],
   "emails": [
-    {"from": "Priya Shah <priya@northwind.example>", "subject": "Re: Rebrand v3 - can we see the dark logo before 4pm?", "received": "Sun 21:14", "snippet": "Hi Sam, the board loved v3. Before our call tomorrow at 4 could you send the dark-background version of the logo and the updated invoice with the extra revision round? Thanks!", "flags": []},
-    {"from": "Mom <mom@family.example>", "subject": "Sunday lunch?", "received": "Sun 18:02", "snippet": "Are you coming next Sunday? Your aunt is visiting and wants to see you. Let me know by Wednesday so I can plan the food.", "flags": []},
-    {"from": "Marc (landlord) <marc@rentals.example>", "subject": "Plumber visit Tuesday", "received": "Sun 15:40", "snippet": "Hi Sam, the plumber will come Tuesday between 10 and 12 to fix the bathroom tap. Please confirm someone will be home or leave the key with the neighbour.", "flags": []},
-    {"from": "Bright Dental <noreply@brightdental.example>", "subject": "Appointment reminder", "received": "Sun 09:00", "snippet": "This is a reminder of your check-up on Thursday at 08:15. Reply C to confirm or call us to reschedule.", "flags": []},
-    {"from": "Bank Security <alerts@bank.example>", "subject": "New sign-in to your account", "received": "Sun 23:51", "snippet": "We noticed a new sign-in to your online banking from Chrome on Windows in Lyon, France. If this was not you, lock your card in the app immediately.", "flags": []},
-    {"from": "GitHub <notifications@github.com>", "subject": "[sam/portfolio] Dependabot: 2 security updates", "received": "Sun 07:12", "snippet": "Dependabot opened 2 pull requests to update vulnerable dependencies: next 14.2.3 -> 14.2.35, braces 3.0.2 -> 3.0.3.", "flags": []},
-    {"from": "SkyHop Airlines <checkin@skyhop.example>", "subject": "Check-in is open for your flight to Lisbon", "received": "Sun 10:30", "snippet": "Your flight SH 482 to Lisbon departs Wednesday at 07:05. Online check-in is now open and closes 2 hours before departure.", "flags": []},
-    {"from": "Design Weekly <hello@designweekly.example>", "subject": "10 fonts you'll love this autumn", "received": "Sun 08:00", "snippet": "This week: variable fonts, a new serif from a Lisbon foundry, and our favourite colour palettes for October.", "flags": []},
-    {"from": "ShopMart <deals@shopmart.example>", "subject": "48 hours only: 40% off everything", "received": "Sun 12:00", "snippet": "Our biggest sale of the season ends Tuesday at midnight. Free shipping on orders over 30.", "flags": []},
-    {"from": "Lina <lina@friends.example>", "subject": "tomorrow!", "received": "Sun 22:30", "snippet": "Still on for lunch at 12:30? I might be 10 min late, saving us a table by the window. Also bring the book you promised!", "flags": []}
+    {
+      "from": "Priya Shah <priya@northwind.example>",
+      "subject": "Re: Rebrand v3 - can we see the dark logo before 4pm?",
+      "received": "Sun 21:14",
+      "snippet": "Hi Sam, the board loved v3. Before our call tomorrow at 4 could you send the dark-background version of the logo and the updated invoice with the extra revision round? Thanks!",
+      "flags": []
+    },
+    {
+      "from": "Mom <mom@family.example>",
+      "subject": "Sunday lunch?",
+      "received": "Sun 18:02",
+      "snippet": "Are you coming next Sunday? Your aunt is visiting and wants to see you. Let me know by Wednesday so I can plan the food.",
+      "flags": []
+    },
+    {
+      "from": "Marc (landlord) <marc@rentals.example>",
+      "subject": "Plumber visit Tuesday",
+      "received": "Sun 15:40",
+      "snippet": "Hi Sam, the plumber will come Tuesday between 10 and 12 to fix the bathroom tap. Please confirm someone will be home or leave the key with the neighbour.",
+      "flags": []
+    },
+    {
+      "from": "Bright Dental <noreply@brightdental.example>",
+      "subject": "Appointment reminder",
+      "received": "Sun 09:00",
+      "snippet": "This is a reminder of your check-up on Thursday at 08:15. Reply C to confirm or call us to reschedule.",
+      "flags": []
+    },
+    {
+      "from": "Bank Security <alerts@bank.example>",
+      "subject": "New sign-in to your account",
+      "received": "Sun 23:51",
+      "snippet": "We noticed a new sign-in to your online banking from Chrome on Windows in Lyon, France. If this was not you, lock your card in the app immediately.",
+      "flags": []
+    },
+    {
+      "from": "GitHub <notifications@github.com>",
+      "subject": "[sam/portfolio] Dependabot: 2 security updates",
+      "received": "Sun 07:12",
+      "snippet": "Dependabot opened 2 pull requests to update vulnerable dependencies: next 14.2.3 -> 14.2.35, braces 3.0.2 -> 3.0.3.",
+      "flags": []
+    },
+    {
+      "from": "SkyHop Airlines <checkin@skyhop.example>",
+      "subject": "Check-in is open for your flight to Lisbon",
+      "received": "Sun 10:30",
+      "snippet": "Your flight SH 482 to Lisbon departs Wednesday at 07:05. Online check-in is now open and closes 2 hours before departure.",
+      "flags": []
+    },
+    {
+      "from": "Design Weekly <hello@designweekly.example>",
+      "subject": "10 fonts you'll love this autumn",
+      "received": "Sun 08:00",
+      "snippet": "This week: variable fonts, a new serif from a Lisbon foundry, and our favourite colour palettes for October.",
+      "flags": []
+    },
+    {
+      "from": "ShopMart <deals@shopmart.example>",
+      "subject": "48 hours only: 40% off everything",
+      "received": "Sun 12:00",
+      "snippet": "Our biggest sale of the season ends Tuesday at midnight. Free shipping on orders over 30.",
+      "flags": []
+    },
+    {
+      "from": "Lina <lina@friends.example>",
+      "subject": "tomorrow!",
+      "received": "Sun 22:30",
+      "snippet": "Still on for lunch at 12:30? I might be 10 min late, saving us a table by the window. Also bring the book you promised!",
+      "flags": []
+    }
   ]
 }

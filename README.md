@@ -1,63 +1,103 @@
-# The Daily Me
+# The Localhost Times
 
-A private morning newspaper with exactly one reader.
+*All the news that's fit to print. Printed on your machine.*
 
-Every morning it reads your inbox, today's calendar and the news, then hands you a
-one-page newspaper to read and a 3-minute audio briefing to listen to while you
-brush your teeth. A friend asked for it. They wanted their day to fit on one page.
+A private morning newspaper with exactly one reader: you.
 
-**Your inbox is read by Gemma 4 running on your own laptop.** Nothing in it is
-sent to a cloud model. The only thing that leaves the machine is the finished
-briefing script, which goes to text-to-speech.
+Every morning it reads your inbox, today's calendar, your tasks, the weather and the news.
+Then an open-weight model **running on your own laptop** (Gemma 4 via Ollama) writes:
 
-Live demo (a made-up reader, Sam): see the Render link in the DEV post.
+- a **one-page newspaper** you can flip through in the browser or read in your inbox, and
+- a **3-minute audio briefing** to listen to while you brush your teeth.
+
+A friend asked for it. They wanted their whole day to fit on one page, without handing their inbox to someone else's cloud.
+
+**Live demo** (a made-up reader, Sam): https://the-localhost-times.onrender.com · [demo edition](https://the-localhost-times.onrender.com/demo/)
 
 ## How it works
 
 ```
-Gmail (IMAP, read-only) ─┐
-Google Calendar (iCal) ──┼─> Gemma 4 via Ollama, on-device ──> edition.json
-Google News (RSS) ───────┘    (JSON-schema output, no invented facts)
-                                         │
-                     ┌───────────────────┼────────────────────┐
-                     v                   v                    v
-              index.html          edition.mp3            email to you
-              (newspaper)     (ElevenLabs voice)    (page + audio attached)
+ mail (IMAP, read-only) ─┐
+ calendars (iCal) ───────┤
+ Todoist · GitHub ───────┼──> Gemma 4 on your laptop ──> edition.json ──┬─> newspaper (flip-through web page)
+ weather (Open-Meteo) ───┤    (Ollama, JSON schema,                     ├─> audio briefing (ElevenLabs or macOS voice)
+ news (Google · RSS · HN)┘     never invents facts)                     └─> email · Telegram · Slack · Discord · ntfy
 ```
 
-One file, [`daily_me.py`](daily_me.py). Standard library for mail, news, HTML and SMTP.
-
-## Run it
+## Quick start
 
 ```bash
-brew install ollama && ollama pull gemma4:e4b
-cp .env.example .env      # Gmail app password, iCal URL, ElevenLabs key
-uv run daily_me.py        # today's edition -> editions/<date>/ and your inbox
-uv run daily_me.py --demo # demo reader -> site/ (what's deployed on Render)
+brew install ollama && ollama pull gemma4:e4b      # the editor, ~7 GB, runs locally
+git clone https://github.com/mohamedaminehamdi/the-localhost-times
+cd the-localhost-times
+cp .env.example .env                                # switch integrations on
+uv run localhost-times --list                       # see what is on
+uv run localhost-times                              # print today's edition
 ```
 
-Every morning at 7:
+The edition lands in `editions/<date>/` (open `index.html`) and is delivered wherever you configured.
+Prefer clicking? The [landing page](https://the-localhost-times.onrender.com) has a `.env` builder that runs entirely in your browser.
 
-```
-0 7 * * * cd /path/to/the-daily-me && /opt/homebrew/bin/uv run daily_me.py
+Print it every morning at 7:
+
+```cron
+0 7 * * * cd ~/the-localhost-times && /opt/homebrew/bin/uv run localhost-times
 ```
 
-Flags: `--no-audio` (skip text-to-speech), `--no-send` (don't email).
+Flags: `--list`, `--no-audio`, `--no-send`, `--demo` (prints the public demo into `site/demo/`).
+
+## Integrations
+
+Each one switches on when its variables are set in `.env`. See [`.env.example`](.env.example) for every option.
+
+| | Integrations | Variables |
+|---|---|---|
+| **Mail** (IMAP, read-only) | Gmail, iCloud, Fastmail, Yahoo, Zoho, AOL, GMX, any IMAP server over SSL | `MAIL_USER`, `MAIL_PASSWORD`, `MAIL_HOST` |
+| **Calendars** | Any iCal link: Google, Outlook / Microsoft 365, Apple iCloud, Fastmail | `ICAL_URLS` |
+| **Tasks** | Todoist (today + overdue), GitHub notifications | `TODOIST_TOKEN`, `GITHUB_TOKEN` |
+| **Weather** | Open-Meteo (no key) | `WEATHER_CITY` |
+| **News** | Google News topics, any RSS/Atom feed, Hacker News | `NEWS_TOPICS`, `RSS_FEEDS`, `HACKERNEWS` |
+| **Editor** (open models) | Ollama (default Gemma 4), or any OpenAI-compatible server: LM Studio, llama.cpp, vLLM, Jan | `MODEL`, `LLM_BASE_URL`, `LLM_API_KEY` |
+| **Voice** | ElevenLabs, macOS built-in voice (fully offline), none | `ELEVENLABS_API_KEY`, `VOICE` |
+| **Delivery** | Email (SMTP), Telegram, Slack, Discord, ntfy push, local folder | `SEND_TO`, `TELEGRAM_*`, `SLACK_WEBHOOK_URL`, `DISCORD_WEBHOOK_URL`, `NTFY_TOPIC` |
+
+Outlook.com mail isn't supported yet: Microsoft requires OAuth for IMAP. A good first contribution.
 
 ## Privacy model
 
 | Data | Where it goes |
 |---|---|
-| Emails, calendar | Read on your laptop by Gemma 4 (Ollama). IMAP is opened read-only; nothing is marked as read. |
-| Finished briefing script | ElevenLabs, to become audio. Use `--no-audio` to keep everything local. |
-| The edition | Emailed to you through your own Gmail. |
-| Demo site | A made-up inbox only. Real editions are never uploaded. |
+| Emails, calendar, tasks | Read on your machine by the local model. IMAP is opened read-only; nothing is marked as read. |
+| The finished briefing script | To ElevenLabs for the voice, if you set a key. With `VOICE=say` (macOS) it never leaves the laptop. |
+| The edition | Saved locally and delivered only through the accounts you configure. |
+| News, weather | Public feeds, fetched by topic or city. |
+| The demo site | A made-up inbox. Real editions are never uploaded anywhere. |
+
+Point `LLM_BASE_URL` at a remote server and your mail goes there instead. The byline on every edition says honestly where it was written.
+
+## Project layout
+
+```
+localhost_times/
+  cli.py       the morning run, and the integration registry
+  sources.py   mail, calendars, tasks, weather, news
+  editor.py    the prompt, the JSON schema, Ollama / OpenAI-compatible call
+  voice.py     ElevenLabs, macOS say
+  render.py    flip-through web page + email version
+  deliver.py   email, Telegram, Slack, Discord, ntfy
+  net.py       small stdlib HTTP helpers
+site/          landing page + demo edition (deployed on Render)
+tests/         offline tests: `uv run pytest`
+```
+
+Three runtime dependencies (`icalendar`, `recurring-ical-events`, `python-dotenv`). Everything else is the standard library.
+
+## Contributing
+
+New integrations are the best way in, usually one function and one line. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Built with
 
-- [Gemma 4](https://ollama.com/library/gemma4), open-weight, local through [Ollama](https://ollama.com)
-- [ElevenLabs](https://elevenlabs.io) text-to-speech
-- [Render](https://render.com) static site for the public demo
-- [Entire](https://entire.io) to keep the agent sessions behind the code
+[Gemma 4](https://ai.google.dev/gemma) · [Ollama](https://ollama.com) · [ElevenLabs](https://elevenlabs.io) · [Render](https://render.com) · [StPageFlip](https://github.com/Nodlik/StPageFlip) · [Open-Meteo](https://open-meteo.com) · [Entire](https://entire.io)
 
-Built for the DEV Hacktoberfest 2026 Weekend Challenge, "Build for a Friend". MIT licensed.
+Built for a friend, for the [DEV Hacktoberfest 2026 Weekend Challenge](https://dev.to/challenges/hacktoberfest-weekend-2026-10-01). MIT licensed.
