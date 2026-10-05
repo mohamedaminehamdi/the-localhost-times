@@ -4,9 +4,9 @@ In 1995, Nicholas Negroponte imagined "The Daily Me": a newspaper edited for exa
 
 ## What I Built
 
-My friend starts every day the same way, half awake with a toothbrush in hand. Open Gmail. Open the calendar. Check the weather. Scroll the news. By the time they've worked out what actually matters today, the coffee is cold. So they asked me for something simple: *read it all for me, and tell me what my day looks like.*
+My friend starts every day the same way, half awake with a toothbrush in hand. Open Gmail. Open the calendar. Check the weather. Scroll the news. By the time he's worked out what actually matters today, the coffee is cold. So he asked me for something simple: *read it all for me, and tell me what my day looks like.*
 
-There was one condition: they didn't want to hand their entire inbox to yet another cloud AI.
+There was one condition: he didn't want to hand his entire inbox to yet another cloud AI.
 
 So I built **The Localhost Times**: *All the news that's fit to print. Printed on your machine.*
 
@@ -102,7 +102,7 @@ On my fanless M3 MacBook Air, Gemma 4 prints a full edition in 70 to 90 seconds,
 
 Your inbox is the most private thing you own. It holds your bank's security alerts, your doctor, your landlord, your mum.
 
-The AI morning briefings I tried all work the same way: connect your Google account, and their servers read your mail. For my friend that was a deal-breaker, and I think they're right.
+The AI morning briefings I tried all work the same way: connect your Google account, and their servers read your mail. For my friend that was a deal-breaker, and I think he's right.
 
 Open-weight models change that deal:
 
@@ -113,6 +113,10 @@ Open-weight models change that deal:
 - **It's open all the way down:** Ollama, Gemma, StPageFlip, Open-Meteo, Hacker News's public API. The project is MIT licensed so anyone can print their own paper, and the README shows how to add an integration in three steps.
 
 A closed API would have made this easier to demo and impossible to trust. Here, open *was* the feature.
+
+## Handing It Over
+
+I handed my friend The Localhost Times. He likes it, and he said it will help him be prepared for his morning. That was the whole brief.
 
 ## My Agent Session
 
