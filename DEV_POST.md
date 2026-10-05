@@ -12,7 +12,7 @@ So I built **The Localhost Times**: *All the news that's fit to print. Printed o
 
 Every morning it reads your inbox, today's calendar, your tasks, the weather and the news. Then an open-weight model **running on your own laptop** writes two things:
 
-- 📰 **A one-page newspaper** you can flip through in the browser (it really turns pages) or read straight from your inbox.
+- 📰 **A one-page edition** you can read in the browser or straight from your inbox.
 - 🎧 **A 3-minute audio briefing**, written to be heard while you brush your teeth.
 
 The paper has a front page with the headline of your day, then:
@@ -25,7 +25,7 @@ The paper has a front page with the headline of your day, then:
 
 ## Demo
 
-- **Landing page:** https://mohamedaminehamdi.github.io/the-localhost-times/. It's a newspaper you flip through (drag a corner, swipe, or use the arrow keys), with a `.env` builder that runs entirely in your browser.
+- **Landing page:** https://mohamedaminehamdi.github.io/the-localhost-times/. The live demo edition is embedded right in the page, and there's a `.env` builder that runs entirely in your browser.
 - **Today's demo edition:** https://mohamedaminehamdi.github.io/the-localhost-times/demo/. It was written by Gemma 4 for Sam, a made-up reader with a made-up inbox, using real news and real weather. Press play on the audio bar.
 
 ## Code
@@ -39,7 +39,7 @@ The paper has a front page with the headline of your day, then:
 ```
 mail (IMAP, read-only) ─┐
 calendars (iCal) ───────┤
-Todoist · GitHub ───────┼──> Gemma 4 on your laptop ──> edition.json ──┬─> flip-through newspaper
+Todoist · GitHub ───────┼──> Gemma 4 on your laptop ──> edition.json ──┬─> one-page edition
 weather (Open-Meteo) ───┤    (Ollama, JSON schema)                     ├─> audio briefing
 news (Google · RSS · HN)┘                                              └─> email · Telegram · Slack · Discord · ntfy
 ```
@@ -90,11 +90,10 @@ A broken source is logged and skipped, because one flaky API should never cancel
 
 **6. The voice.** The briefing script is written for the ear: no lists, no URLs, no email addresses. By default macOS's built-in voice reads it aloud (that's what the demo uses), so the whole pipeline runs with the wifi off. Add an ElevenLabs key and it switches to ElevenLabs.
 
-**7. The paper turns.** The demo edition and the landing page use [StPageFlip](https://github.com/Nodlik/StPageFlip): drag a corner and the page curls.
-- Desktop shows two-page spreads sized to your window.
-- Phones get a calm scrolling paper.
-- So does anyone with `prefers-reduced-motion` turned on.
-- The emailed edition is the same pages in one column, because mail clients strip scripts.
+**7. The edition reads like a product, not a printout.** It's one page of cards: the headline of your day, your schedule as a timeline, must-dos as a checklist, who's waiting on you, and the world.
+- It follows your system theme: dark at 6 a.m., light at noon.
+- It needs no JavaScript at all.
+- The emailed version uses literal colors and a light theme, because mail clients strip CSS variables and web fonts.
 
 On my fanless M3 MacBook Air, Gemma 4 prints a full edition in 70 to 90 seconds, before the kettle boils.
 
@@ -110,7 +109,7 @@ Open-weight models change that deal:
 - **It costs nothing per morning.** No API bill, no subscription, no rate limit, so it can run every day for years.
 - **It can't be taken away.** No one can deprecate the model, change the terms or start training on my friend's mail. The weights are on the disk.
 - **It works offline.** With the macOS voice, you can print your paper on a plane.
-- **It's open all the way down:** Ollama, Gemma, StPageFlip, Open-Meteo, Hacker News's public API. The project is MIT licensed so anyone can print their own paper, and the README shows how to add an integration in three steps.
+- **It's open all the way down:** Ollama, Gemma, Open-Meteo, Hacker News's public API. The project is MIT licensed so anyone can print their own paper, and the README shows how to add an integration in three steps.
 
 A closed API would have made this easier to demo and impossible to trust. Here, open *was* the feature.
 
@@ -120,7 +119,7 @@ I handed my friend The Localhost Times. He likes it, and he said it will help hi
 
 ## My Agent Session
 
-I built this overnight with Claude Code as my pair programmer: brainstorming the idea with my friend's brief, then the package, the prompt fixes from real test runs, the flip-through paper and the tests.
+I built this overnight with Claude Code as my pair programmer: brainstorming the idea with my friend's brief, then the package, the prompt fixes from real test runs, the design and the tests.
 
 ## Prize Categories
 

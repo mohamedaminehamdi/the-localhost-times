@@ -1,61 +1,49 @@
 <!doctype html><html lang=en><head><meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1"><title>The Localhost Times</title>
-<link rel=preconnect href="https://fonts.gstatic.com" crossorigin><link rel=stylesheet href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Oswald:wght@500;600&display=swap"><style>
-:root{--paper:#f4efe6;--ink:#1a1a1a;--muted:#5b554c;--accent:#7a1f1f;--table:#2b2723}
-@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--table:#121110}}
+<link rel=preconnect href="https://fonts.gstatic.com" crossorigin><link rel=stylesheet href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap"><style>:root{--scheme:dark;--bg:#0a0a0b;--surface:#111114;--surface2:#17171b;--border:rgba(255,255,255,.08);--text:#ededef;--muted:#a1a1aa;--accent:#f5b947;--glow:rgba(245,185,71,.14)}@media (prefers-color-scheme:light){:root{--scheme:light;--bg:#fafaf9;--surface:#ffffff;--surface2:#f4f4f5;--border:rgba(0,0,0,.09);--text:#18181b;--muted:#52525b;--accent:#a8701a;--glow:rgba(245,185,71,.20)}}
+:root{color-scheme:var(--scheme)}
 *{box-sizing:border-box}
-body{margin:0;background:var(--table);color:var(--ink);font:17px/1.5 'Libre Caslon Text',Georgia,serif}
-.bar{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;padding:14px 16px;color:#eee;
- font:600 13px/1 Oswald,Helvetica,Arial,sans-serif;letter-spacing:1.5px;text-transform:uppercase}
-.bar audio{height:36px;max-width:100%}
-.bar button{font:inherit;letter-spacing:inherit;background:none;color:#eee;border:1px solid #777;padding:9px 14px;cursor:pointer}
-.bar button:focus-visible,a:focus-visible{outline:2px solid #e9c46a;outline-offset:2px}
-.desk{max-width:min(1180px,calc((100vh - 84px) * 1.418));margin:0 auto 24px;padding:0 16px}
-.page{background:var(--paper);background-image:radial-gradient(rgba(0,0,0,.035) 1px,transparent 1px);background-size:3px 3px}
-.inner{padding:clamp(18px,4vw,34px);height:100%;overflow:auto}
-body:not(.flip) .page{max-width:760px;margin:0 auto 18px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
-body:not(.flip) .bar .turn{display:none}
-.mast{text-align:center;border-bottom:4px double var(--ink);padding-bottom:6px}
-.mast h1{white-space:nowrap;font:400 clamp(28px,4.2vw,58px)/1.05 UnifrakturMaguntia,'Old English Text MT',Georgia,serif;margin:6px 0}
-.ears{display:flex;justify-content:space-between;gap:12px;font-size:11px;font-style:italic;color:var(--muted);text-align:left}
-.ears span:last-child{text-align:right}
-.dateline{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;border-top:1px solid var(--ink);margin-top:6px;
- padding-top:5px;font:500 11px/1.3 Oswald,Helvetica,Arial,sans-serif;letter-spacing:1px;text-transform:uppercase}
-.lead h2{font-size:clamp(26px,4.4vw,40px);line-height:1.08;margin:18px 0 10px}
-.lede:first-letter{float:left;font-size:3.3em;line-height:.85;padding:4px 6px 0 0;font-weight:700}
-.inside{border-top:1px solid var(--ink);margin-top:18px;padding-top:8px;font:500 12px Oswald,Helvetica,Arial,sans-serif;
- letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
-section{border-top:2px solid var(--ink);padding-top:6px;margin-bottom:22px}
-h3{font:600 13px/1.4 Oswald,Helvetica,Arial,sans-serif;text-transform:uppercase;letter-spacing:2px;margin:0 0 8px}
-ul{padding-left:18px;margin:0}li{margin:0 0 9px}
-.src{font:500 11px Oswald,Helvetica,Arial,sans-serif;letter-spacing:.5px;color:var(--muted);text-transform:uppercase}
-a{color:var(--accent)}.quiet{color:var(--muted);font-style:italic}
-footer{border-top:1px solid var(--ink);padding-top:8px;font-size:12px;color:var(--muted);text-align:center}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+ -webkit-font-smoothing:antialiased}
+.wrap{max-width:880px;margin:0 auto;padding:28px 16px 64px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+.mark{font:italic 400 26px/1 'Instrument Serif',Georgia,serif;color:var(--text);text-decoration:none;white-space:nowrap}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin-right:10px;vertical-align:middle;
+ box-shadow:0 0 14px var(--accent)}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border:1px solid var(--border);border-radius:999px;
+ font-size:12px;font-weight:500;color:var(--muted);background:var(--surface)}
+.chip svg{width:12px;height:12px}
+.hero{padding:clamp(22px,4vw,34px);border:1px solid var(--border);border-radius:22px;
+ background:radial-gradient(120% 140% at 0% 0%,var(--glow),transparent 60%),var(--surface)}
+.date{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+h1{font-size:clamp(28px,5.4vw,46px);line-height:1.08;letter-spacing:-.03em;margin:10px 0 12px;font-weight:700}
+.lede{color:var(--muted);font-size:18px;margin:0;max-width:62ch}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+audio{display:block;width:100%;margin-top:22px;border-radius:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.card{padding:22px 24px;border:1px solid var(--border);border-radius:18px;background:var(--surface)}
+.full{margin-top:16px}
+h2{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+ color:var(--muted);margin:0 0 12px}
+h2 b{color:var(--accent);font-weight:600}
+ul{list-style:none;margin:0;padding:0}
+li{padding:11px 0;border-top:1px solid var(--border)}
+li:first-child{border-top:0;padding-top:2px}
+.time{display:inline-block;min-width:66px;font-variant-numeric:tabular-nums;font-weight:600}
+.sub{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.todo li{display:flex;gap:12px;align-items:flex-start}
+.todo li:before{content:"";flex:none;width:16px;height:16px;margin-top:4px;border:1.5px solid var(--accent);border-radius:50%}
+.who{display:flex;gap:12px;align-items:flex-start}
+.av{flex:none;width:32px;height:32px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);text-align:center;
+ line-height:30px;font-weight:600;font-size:13px;color:var(--accent)}
+.news a{color:var(--text);font-weight:600;text-decoration:none}
+.news a:hover{text-decoration:underline;text-decoration-color:var(--accent)}
+.quiet{color:var(--muted);font-style:italic}
+footer{margin-top:28px;text-align:center;color:var(--muted);font-size:13px}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+@media (max-width:680px){.grid{grid-template-columns:1fr}}
 </style></head>
-<body><nav class=bar aria-label="Edition controls"><button id=prev class=turn>&larr; Prev</button><audio controls preload=none src="edition.m4a" aria-label="Listen to this edition"></audio><button id=next class=turn>Next &rarr;</button></nav>
-<main class=desk><div id=paper><div class=page><div class=inner><header class=mast>
-<div class=ears><span>Lyon: Overcast, 16–26°, 0% rain</span><span>All the news that's fit to print.<br>Printed on your machine.</span></div>
-<h1>The Localhost Times</h1>
-<div class=dateline><span>Monday, October 5, 2026</span><span>Edition for Sam</span><span>Written on-device by gemma4:e4b</span></div>
-</header>
-<article class=lead><h2>Security Alert Demands Immediate Action This Morning</h2><p class=lede>The overcast sky in Lyon suggests a quiet start to the day, though your inbox has a very urgent security notification. Today requires you to handle a critical account alert before diving into your schedule.</p></article>
-<section><h3>Top of the list</h3><ul><li>Lock card in app immediately due to new sign-in alert</li><li>Pay rent</li><li>Send Northwind the updated invoice</li></ul></section>
-<div class=inside>Inside: Today · Must do · Waiting on you · Worth knowing · The world</div></div></div><div class=page><div class=inner><section><h3>Today</h3><ul><li><b>all day</b> Rent due</li><li><b>09:30</b> Team standup <span class=src>Google Meet</span></li><li><b>12:30</b> Lunch with Lina <span class=src>Cafe Verde</span></li><li><b>16:00</b> Client call: Northwind rebrand review <span class=src>Zoom</span></li><li><b>19:00</b> Climbing gym <span class=src>Boulder Bar</span></li></ul></section><section><h3>Must do</h3><ul><li>Lock card in app immediately due to new sign-in alert</li><li>Pay rent</li><li>Send Northwind the updated invoice</li><li>Send dark-background logo and updated invoice to Priya Shah</li></ul></section></div></div><div class=page><div class=inner><section><h3>Waiting on you</h3><ul><li><b>Priya Shah</b>: Re: Rebrand v3 - can we see the dark logo before 4pm?<br><span class=src>Board needs dark logo and updated invoice before 4pm call</span></li><li><b>Mom</b>: Sunday lunch?<br><span class=src>Need to let Mom know about next Sunday by Wednesday</span></li></ul></section><section><h3>Worth knowing</h3><ul><li>Bright Dental reminder for Thursday check-up</li><li>SkyHop Airlines check-in is open for Lisbon flight</li><li>Design Weekly features autumn fonts</li><li>ShopMart sale ends Tuesday at midnight</li></ul></section></div></div><div class=page><div class=inner><section><h3>The world</h3><ul><li><a href="https://news.google.com/rss/articles/CBMipgFBVV95cUxPTzYxcENTQ3M0VnFWR3h0cVF2TkRtc2Rlci13bDE5dnZXMENGLWVPTzdKX3RpRXBvZGJFcEo3d2tmelg2QmN4Q1lkNGhnN1luQ3FCdnRMeUxlTHlTeGswVzNjWVBzdVI2ZWttdm5HR3REQ3lSd3JqSUltVTRuTTY2dWdVTFVsRUNyZGVTVDBkY2E1M3poNG8tNktZMjNtNWliR2dlRkxR?oc=5">Brazil election headed to runoff, projection shows, as Bolsonaro lead narrows</a> <span class=src>Reuters</span><br>Brazil election is heading to a runoff as Bolsonaro&#x27;s lead shrinks.</li><li><a href="https://news.google.com/rss/articles/CBMipwFBVV95cUxNUDB6OUQwcTRCN3p2Mnl0MnY3Mlk4S2pITUZacXlNVDhaV2RkbFo2VUtIOGd3TGxCZVZ5bmhWNXNESUlsN09BX21NaUtLSkFSNjFjdVlqaXpZZDNGRWFlekoxTzlTd2FlbFh2cXF0WnVtSEk0T0t3VkF5Nkx4M3RYVmprS21Cd2FHbUcyaV83OEdVcDBQSWwyaXRmckE1YkJxTVQxVWhIRQ?oc=5">UAE had shared details about FlyDubai flight with Israel, including pilots&#x27; names and nationalities, officials tell AP</a> <span class=src>AP News</span><br>UAE shared details about a FlyDubai flight with Israel, including pilot information.</li><li><a href="https://news.google.com/rss/articles/CBMitgFBVV95cUxNcWs3d3dyLW84cnhWTFhKNktSQk1VNUNib0hrNFBVbUwyRDJLTlc1ZnRnOXJ5ZUI4WEEtN25oU2lFNC0zWHVJRl9FTXlETjFvWjhrUE9LbE43WVJWN0xUUFUwVGtoQjhiZjYzdFlXay1wVTQ4bV8xWlVHWGY4RUpPd3Bsc2ZsRm5Qa0ItN0tkM20zZWdyaE4zMVJaX1hOdXZ2MUJrY3Z5RXJrN0I0ZWxTaFBiMllXZw?oc=5">Rock climbing offers students a new way to exercise and get involved in community</a> <span class=src>uatrav.com</span><br>Rock climbing provides students with a new way to exercise and engage with community.</li><li><a href="https://news.google.com/rss/articles/CBMiTEFVX3lxTE5vSnF6aFdvWldSZ1pxRDAxN2xWdFZBNmdncnlwSDBySmRabGxkRnl3SlNaV0FWaUpjMWl0Q1FaWWVjMmNqSFY0dHE3UGI?oc=5">Fargo man arrested after climbing downtown tower</a> <span class=src>The Mighty 790 KFGO</span><br>A man was arrested after climbing a downtown tower.</li></ul></section><footer>Read and written by an open model on your own machine. Nothing in your inbox left the laptop.</footer></div></div></div></main>
-<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js" integrity="sha384-L4eWrYFdqQ+LoGA0MMuqLqzV13x7SKkQaqacy4MED8e815dS37tTKlO/6xBEUpZW" crossorigin="anonymous"></script><script>
-const book = document.getElementById('paper');
-const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-// Phones get a calm scrolling paper; spreads need room.
-if (window.St && !calm && innerWidth >= 760) {
-  document.body.classList.add('flip');
-  const pf = new St.PageFlip(book, {width: 560, height: 790, size: 'stretch', minWidth: 300, maxWidth: 820,
-    minHeight: 430, maxHeight: 1160, showCover: false, maxShadowOpacity: 0.45, mobileScrollSupport: true});
-  pf.loadFromHTML(book.querySelectorAll('.page'));
-  document.getElementById('prev').onclick = () => pf.flipPrev();
-  document.getElementById('next').onclick = () => pf.flipNext();
-  addEventListener('keydown', ev => {
-    if (ev.key === 'ArrowRight') pf.flipNext();
-    if (ev.key === 'ArrowLeft') pf.flipPrev();
-  });
-}
-</script></body></html>
+<body><main class=wrap><header class=top><span class=mark><span class=dot></span>The Localhost Times</span>
+<span class=chip><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Written on-device by gemma4:e4b</span></header>
+<section class=hero><div class=date>Monday, October 5 · Edition for Sam</div>
+<h1>Security Alert Demands Immediate Action This Morning</h1><p class=lede>The overcast sky in Lyon suggests a quiet start to the day, though your inbox has a very urgent security notification. Today requires you to handle a critical account alert before diving into your schedule.</p><div class=meta><span class=chip>Lyon · Overcast · 16–26° · 0% rain</span><span class=chip>4 to do</span><span class=chip>2 waiting on you</span></div><audio controls preload=none src="edition.m4a" aria-label="Listen to this edition"></audio></section><div class=grid><section class="card "><h2>Today</h2><ul><li><span class=time>all day</span>Rent due</li><li><span class=time>09:30</span>Team standup<span class=sub>Google Meet</span></li><li><span class=time>12:30</span>Lunch with Lina<span class=sub>Cafe Verde</span></li><li><span class=time>16:00</span>Client call: Northwind rebrand review<span class=sub>Zoom</span></li><li><span class=time>19:00</span>Climbing gym<span class=sub>Boulder Bar</span></li></ul></section><section class="card todo"><h2>Must do <b>4</b></h2><ul><li>Lock card in app immediately due to new sign-in alert</li><li>Pay rent</li><li>Send Northwind the updated invoice</li><li>Send dark-background logo and updated invoice to Priya Shah</li></ul></section></div><div class=grid><section class="card "><h2>Waiting on you <b>2</b></h2><ul><li><div class=who><span class=av>P</span><div><b>Priya Shah</b> · Re: Rebrand v3 - can we see the dark logo before 4pm?<span class=sub>Board needs dark logo and updated invoice before 4pm call</span></div></div></li><li><div class=who><span class=av>M</span><div><b>Mom</b> · Sunday lunch?<span class=sub>Need to let Mom know about next Sunday by Wednesday</span></div></div></li></ul></section><section class="card "><h2>Worth knowing</h2><ul><li>Bright Dental reminder for Thursday check-up</li><li>SkyHop Airlines check-in is open for Lisbon flight</li><li>Design Weekly features autumn fonts</li><li>ShopMart sale ends Tuesday at midnight</li></ul></section></div><section class="card news full"><h2>The world</h2><ul><li><a href="https://news.google.com/rss/articles/CBMipgFBVV95cUxPTzYxcENTQ3M0VnFWR3h0cVF2TkRtc2Rlci13bDE5dnZXMENGLWVPTzdKX3RpRXBvZGJFcEo3d2tmelg2QmN4Q1lkNGhnN1luQ3FCdnRMeUxlTHlTeGswVzNjWVBzdVI2ZWttdm5HR3REQ3lSd3JqSUltVTRuTTY2dWdVTFVsRUNyZGVTVDBkY2E1M3poNG8tNktZMjNtNWliR2dlRkxR?oc=5" rel="noopener noreferrer">Brazil election headed to runoff, projection shows, as Bolsonaro lead narrows</a><span class=sub>Reuters · Brazil election is heading to a runoff as Bolsonaro&#x27;s lead shrinks.</span></li><li><a href="https://news.google.com/rss/articles/CBMipwFBVV95cUxNUDB6OUQwcTRCN3p2Mnl0MnY3Mlk4S2pITUZacXlNVDhaV2RkbFo2VUtIOGd3TGxCZVZ5bmhWNXNESUlsN09BX21NaUtLSkFSNjFjdVlqaXpZZDNGRWFlekoxTzlTd2FlbFh2cXF0WnVtSEk0T0t3VkF5Nkx4M3RYVmprS21Cd2FHbUcyaV83OEdVcDBQSWwyaXRmckE1YkJxTVQxVWhIRQ?oc=5" rel="noopener noreferrer">UAE had shared details about FlyDubai flight with Israel, including pilots&#x27; names and nationalities, officials tell AP</a><span class=sub>AP News · UAE shared details about a FlyDubai flight with Israel, including pilot information.</span></li><li><a href="https://news.google.com/rss/articles/CBMitgFBVV95cUxNcWs3d3dyLW84cnhWTFhKNktSQk1VNUNib0hrNFBVbUwyRDJLTlc1ZnRnOXJ5ZUI4WEEtN25oU2lFNC0zWHVJRl9FTXlETjFvWjhrUE9LbE43WVJWN0xUUFUwVGtoQjhiZjYzdFlXay1wVTQ4bV8xWlVHWGY4RUpPd3Bsc2ZsRm5Qa0ItN0tkM20zZWdyaE4zMVJaX1hOdXZ2MUJrY3Z5RXJrN0I0ZWxTaFBiMllXZw?oc=5" rel="noopener noreferrer">Rock climbing offers students a new way to exercise and get involved in community</a><span class=sub>uatrav.com · Rock climbing provides students with a new way to exercise and engage with community.</span></li><li><a href="https://news.google.com/rss/articles/CBMiTEFVX3lxTE5vSnF6aFdvWldSZ1pxRDAxN2xWdFZBNmdncnlwSDBySmRabGxkRnl3SlNaV0FWaUpjMWl0Q1FaWWVjMmNqSFY0dHE3UGI?oc=5" rel="noopener noreferrer">Fargo man arrested after climbing downtown tower</a><span class=sub>The Mighty 790 KFGO · A man was arrested after climbing a downtown tower.</span></li></ul></section><footer>Read and written by an open model on your own machine. Nothing in your inbox left the laptop.</footer></main></body></html>

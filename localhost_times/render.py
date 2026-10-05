@@ -1,65 +1,63 @@
-"""Print the edition: a flip-through newspaper for the browser, one scrolling page for email."""
+"""Print the edition: a modern briefing page for the browser, and a light version for email."""
 import html
+from string import Template
 from urllib.parse import urlparse
 
 e = html.escape
-MOTTO = "All the news that's fit to print.<br>Printed on your machine."
-FONTS = ("https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400"
-         "&family=Oswald:wght@500;600&display=swap")
-PAGEFLIP = "https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"
-PAGEFLIP_SRI = "sha384-L4eWrYFdqQ+LoGA0MMuqLqzV13x7SKkQaqacy4MED8e815dS37tTKlO/6xBEUpZW"  # pinned + integrity-checked
+FONTS = "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap"
+AUDIO_SLOT = "<!--audio-->"
 
-CSS = """
-:root{--paper:#f4efe6;--ink:#1a1a1a;--muted:#5b554c;--accent:#7a1f1f;--table:#2b2723}
-@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--table:#121110}}
+DARK = {"scheme": "dark", "bg": "#0a0a0b", "surface": "#111114", "surface2": "#17171b", "border": "rgba(255,255,255,.08)",
+        "text": "#ededef", "muted": "#a1a1aa", "accent": "#f5b947", "glow": "rgba(245,185,71,.14)"}
+LIGHT = {"scheme": "light", "bg": "#fafaf9", "surface": "#ffffff", "surface2": "#f4f4f5", "border": "rgba(0,0,0,.09)",
+         "text": "#18181b", "muted": "#52525b", "accent": "#a8701a", "glow": "rgba(245,185,71,.20)"}
+
+CSS = Template("""
+:root{color-scheme:$scheme}
 *{box-sizing:border-box}
-body{margin:0;background:var(--table);color:var(--ink);font:17px/1.5 'Libre Caslon Text',Georgia,serif}
-.bar{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;padding:14px 16px;color:#eee;
- font:600 13px/1 Oswald,Helvetica,Arial,sans-serif;letter-spacing:1.5px;text-transform:uppercase}
-.bar audio{height:36px;max-width:100%}
-.bar button{font:inherit;letter-spacing:inherit;background:none;color:#eee;border:1px solid #777;padding:9px 14px;cursor:pointer}
-.bar button:focus-visible,a:focus-visible{outline:2px solid #e9c46a;outline-offset:2px}
-.desk{max-width:min(1180px,calc((100vh - 84px) * 1.418));margin:0 auto 24px;padding:0 16px}
-.page{background:var(--paper);background-image:radial-gradient(rgba(0,0,0,.035) 1px,transparent 1px);background-size:3px 3px}
-.inner{padding:clamp(18px,4vw,34px);height:100%;overflow:auto}
-body:not(.flip) .page{max-width:760px;margin:0 auto 18px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
-body:not(.flip) .bar .turn{display:none}
-.mast{text-align:center;border-bottom:4px double var(--ink);padding-bottom:6px}
-.mast h1{white-space:nowrap;font:400 clamp(28px,4.2vw,58px)/1.05 UnifrakturMaguntia,'Old English Text MT',Georgia,serif;margin:6px 0}
-.ears{display:flex;justify-content:space-between;gap:12px;font-size:11px;font-style:italic;color:var(--muted);text-align:left}
-.ears span:last-child{text-align:right}
-.dateline{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;border-top:1px solid var(--ink);margin-top:6px;
- padding-top:5px;font:500 11px/1.3 Oswald,Helvetica,Arial,sans-serif;letter-spacing:1px;text-transform:uppercase}
-.lead h2{font-size:clamp(26px,4.4vw,40px);line-height:1.08;margin:18px 0 10px}
-.lede:first-letter{float:left;font-size:3.3em;line-height:.85;padding:4px 6px 0 0;font-weight:700}
-.inside{border-top:1px solid var(--ink);margin-top:18px;padding-top:8px;font:500 12px Oswald,Helvetica,Arial,sans-serif;
- letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
-section{border-top:2px solid var(--ink);padding-top:6px;margin-bottom:22px}
-h3{font:600 13px/1.4 Oswald,Helvetica,Arial,sans-serif;text-transform:uppercase;letter-spacing:2px;margin:0 0 8px}
-ul{padding-left:18px;margin:0}li{margin:0 0 9px}
-.src{font:500 11px Oswald,Helvetica,Arial,sans-serif;letter-spacing:.5px;color:var(--muted);text-transform:uppercase}
-a{color:var(--accent)}.quiet{color:var(--muted);font-style:italic}
-footer{border-top:1px solid var(--ink);padding-top:8px;font-size:12px;color:var(--muted);text-align:center}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-"""
+body{margin:0;background:$bg;color:$text;font:16px/1.6 Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+ -webkit-font-smoothing:antialiased}
+.wrap{max-width:880px;margin:0 auto;padding:28px 16px 64px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:24px}
+.mark{font:italic 400 26px/1 'Instrument Serif',Georgia,serif;color:$text;text-decoration:none;white-space:nowrap}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:$accent;margin-right:10px;vertical-align:middle;
+ box-shadow:0 0 14px $accent}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border:1px solid $border;border-radius:999px;
+ font-size:12px;font-weight:500;color:$muted;background:$surface}
+.chip svg{width:12px;height:12px}
+.hero{padding:clamp(22px,4vw,34px);border:1px solid $border;border-radius:22px;
+ background:radial-gradient(120% 140% at 0% 0%,$glow,transparent 60%),$surface}
+.date{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:$accent}
+h1{font-size:clamp(28px,5.4vw,46px);line-height:1.08;letter-spacing:-.03em;margin:10px 0 12px;font-weight:700}
+.lede{color:$muted;font-size:18px;margin:0;max-width:62ch}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+audio{display:block;width:100%;margin-top:22px;border-radius:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.card{padding:22px 24px;border:1px solid $border;border-radius:18px;background:$surface}
+.full{margin-top:16px}
+h2{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+ color:$muted;margin:0 0 12px}
+h2 b{color:$accent;font-weight:600}
+ul{list-style:none;margin:0;padding:0}
+li{padding:11px 0;border-top:1px solid $border}
+li:first-child{border-top:0;padding-top:2px}
+.time{display:inline-block;min-width:66px;font-variant-numeric:tabular-nums;font-weight:600}
+.sub{display:block;color:$muted;font-size:13px;margin-top:2px}
+.todo li{display:flex;gap:12px;align-items:flex-start}
+.todo li:before{content:"";flex:none;width:16px;height:16px;margin-top:4px;border:1.5px solid $accent;border-radius:50%}
+.who{display:flex;gap:12px;align-items:flex-start}
+.av{flex:none;width:32px;height:32px;border-radius:50%;background:$surface2;border:1px solid $border;text-align:center;
+ line-height:30px;font-weight:600;font-size:13px;color:$accent}
+.news a{color:$text;font-weight:600;text-decoration:none}
+.news a:hover{text-decoration:underline;text-decoration-color:$accent}
+.quiet{color:$muted;font-style:italic}
+footer{margin-top:28px;text-align:center;color:$muted;font-size:13px}
+a:focus-visible{outline:2px solid $accent;outline-offset:2px;border-radius:4px}
+@media (max-width:680px){.grid{grid-template-columns:1fr}}
+""")
 
-FLIP_JS = """
-const book = document.getElementById('paper');
-const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-// Phones get a calm scrolling paper; spreads need room.
-if (window.St && !calm && innerWidth >= 760) {
-  document.body.classList.add('flip');
-  const pf = new St.PageFlip(book, {width: 560, height: 790, size: 'stretch', minWidth: 300, maxWidth: 820,
-    minHeight: 430, maxHeight: 1160, showCover: false, maxShadowOpacity: 0.45, mobileScrollSupport: true});
-  pf.loadFromHTML(book.querySelectorAll('.page'));
-  document.getElementById('prev').onclick = () => pf.flipPrev();
-  document.getElementById('next').onclick = () => pf.flipNext();
-  addEventListener('keydown', ev => {
-    if (ev.key === 'ArrowRight') pf.flipNext();
-    if (ev.key === 'ArrowLeft') pf.flipPrev();
-  });
-}
-"""
+LOCK = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">'
+        '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>')
 
 
 def safe_href(url):
@@ -67,57 +65,64 @@ def safe_href(url):
     return url if urlparse(url or "").scheme.lower() in ("http", "https") else "#"
 
 
-def _list(items):
-    rows = "".join(f"<li>{x}</li>" for x in items)
-    return f"<ul>{rows or '<li class=quiet>Nothing here. Enjoy it.</li>'}</ul>"
-
-
-def _section(title, items):
-    return f"<section><h3>{e(title)}</h3>{_list(items)}</section>"
-
-
 def weather_line(inputs):
     w = (inputs.get("weather") or [None])[0]
-    return f"{w['city']}: {w['sky']}, {w['low']}–{w['high']}°, {w['rain_chance']}% rain" if w else ""
+    return f"{w['city']} · {w['sky']} · {w['low']}–{w['high']}° · {w['rain_chance']}% rain" if w else ""
+
+
+def _name(sender):
+    return sender.split("<")[0].strip(' "') or sender
+
+
+def _card(title, items, cls="", count=False):
+    rows = "".join(f"<li>{x}</li>" for x in items) or "<li class=quiet>Nothing here. Enjoy it.</li>"
+    badge = f" <b>{len(items)}</b>" if count and items else ""
+    return f'<section class="card {cls}"><h2>{e(title)}{badge}</h2><ul>{rows}</ul></section>'
 
 
 def pages(name, day, ed, inputs, byline):
-    """The edition as a list of page bodies, shared by the web and email versions."""
-    schedule = [f"<b>{e(ev['time'])}</b> {e(ev['title'])}" + (f" <span class=src>{e(ev['where'])}</span>" if ev.get("where") else "")
+    """The edition as a list of HTML blocks, shared by the web and email versions."""
+    schedule = [f"<span class=time>{e(ev['time'])}</span>{e(ev['title'])}" + (f"<span class=sub>{e(ev['where'])}</span>" if ev.get("where") else "")
                 for ev in inputs.get("calendar", [])]
-    replies = [f"<b>{e(r['from'].split('<')[0].strip(' \"') or r['from'])}</b>: {e(r['about'])}<br><span class=src>{e(r['why'])}</span>" for r in ed["needs_reply"]]
-    world = [f"<a href=\"{e(safe_href(n['link']))}\" rel=\"noopener noreferrer\">{e(n['title'])}</a> <span class=src>{e(n['source'])}</span><br>{e(n['summary'])}"
-             for n in ed["news"]]
-    front = f"""<header class=mast>
-<div class=ears><span>{e(weather_line(inputs))}</span><span>{MOTTO}</span></div>
-<h1>The Localhost Times</h1>
-<div class=dateline><span>{e(day.strftime('%A, %B %-d, %Y'))}</span><span>Edition for {e(name)}</span><span>{e(byline)}</span></div>
-</header>
-<article class=lead><h2>{e(ed['headline'])}</h2><p class=lede>{e(ed['lede'])}</p></article>
-{_section("Top of the list", map(e, ed["must_do_today"][:3])) if ed["must_do_today"] else ""}
-<div class=inside>Inside: Today · Must do · Waiting on you · Worth knowing · The world</div>"""
+    replies = [f"<div class=who><span class=av>{e(_name(r['from'])[:1].upper())}</span><div><b>{e(_name(r['from']))}</b> · {e(r['about'])}"
+               f"<span class=sub>{e(r['why'])}</span></div></div>" for r in ed["needs_reply"]]
+    world = [f"<a href=\"{e(safe_href(n['link']))}\" rel=\"noopener noreferrer\">{e(n['title'])}</a>"
+             f"<span class=sub>{e(n['source'])} · {e(n['summary'])}</span>" for n in ed["news"]]
+    weather = weather_line(inputs)
+    chips = ([f"<span class=chip>{e(weather)}</span>"] if weather else []) + [
+        f"<span class=chip>{len(ed['must_do_today'])} to do</span>",
+        f"<span class=chip>{len(ed['needs_reply'])} waiting on you</span>"]
+    hero = f"""<header class=top><span class=mark><span class=dot></span>The Localhost Times</span>
+<span class=chip>{LOCK}{e(byline)}</span></header>
+<section class=hero><div class=date>{e(day.strftime('%A, %B %-d'))} · Edition for {e(name)}</div>
+<h1>{e(ed['headline'])}</h1><p class=lede>{e(ed['lede'])}</p><div class=meta>{''.join(chips)}</div>{AUDIO_SLOT}</section>"""
     return [
-        front,
-        _section("Today", schedule) + _section("Must do", map(e, ed["must_do_today"])),
-        _section("Waiting on you", replies) + _section("Worth knowing", map(e, ed["fyi"])),
-        _section("The world", world)
+        hero,
+        f"<div class=grid>{_card('Today', schedule)}{_card('Must do', list(map(e, ed['must_do_today'])), 'todo', True)}</div>",
+        f"<div class=grid>{_card('Waiting on you', replies, count=True)}{_card('Worth knowing', list(map(e, ed['fyi'])))}</div>",
+        _card("The world", world, "news full")
         + "<footer>Read and written by an open model on your own machine. Nothing in your inbox left the laptop.</footer>",
     ]
 
 
-def web(page_bodies, audio_src=None):
+def _vars(tokens):
+    return ";".join(f"--{k}:{v}" for k, v in tokens.items())
+
+
+def web(blocks, audio_src=None):
+    css = (f":root{{{_vars(DARK)}}}@media (prefers-color-scheme:light){{:root{{{_vars(LIGHT)}}}}}"
+           + CSS.substitute({k: f"var(--{k})" for k in DARK}))
     player = f'<audio controls preload=none src="{e(audio_src)}" aria-label="Listen to this edition"></audio>' if audio_src else ""
-    sheets = "".join(f'<div class=page><div class=inner>{body}</div></div>' for body in page_bodies)
+    body = "".join(blocks).replace(AUDIO_SLOT, player)
     return f"""<!doctype html><html lang=en><head><meta charset=utf-8>
 <meta name=viewport content="width=device-width,initial-scale=1"><title>The Localhost Times</title>
-<link rel=preconnect href="https://fonts.gstatic.com" crossorigin><link rel=stylesheet href="{FONTS}"><style>{CSS}</style></head>
-<body><nav class=bar aria-label="Edition controls"><button id=prev class=turn>&larr; Prev</button>{player}<button id=next class=turn>Next &rarr;</button></nav>
-<main class=desk><div id=paper>{sheets}</div></main>
-<script src="{PAGEFLIP}" integrity="{PAGEFLIP_SRI}" crossorigin="anonymous"></script><script>{FLIP_JS}</script></body></html>"""
+<link rel=preconnect href="https://fonts.gstatic.com" crossorigin><link rel=stylesheet href="{FONTS}"><style>{css}</style></head>
+<body><main class=wrap>{body}</main></body></html>"""
 
 
-def email(page_bodies):
-    """Mail clients strip scripts and web fonts, so: one column, inline-friendly CSS, no flipping."""
-    body = "".join(f"<div class=inner>{b}</div>" for b in page_bodies)
-    return f"""<!doctype html><html lang=en><head><meta charset=utf-8><style>{CSS}</style></head>
-<body style="background:#f4efe6"><div class=page style="max-width:760px;margin:0 auto">{body}</div></body></html>"""
+def email(blocks):
+    """Mail clients drop scripts, web fonts and CSS variables: light theme, literal colors."""
+    note = '<div class=meta><span class=chip>Your audio briefing is attached</span></div>'
+    body = "".join(blocks).replace(AUDIO_SLOT, note)
+    return f"""<!doctype html><html lang=en><head><meta charset=utf-8><style>{CSS.substitute(LIGHT)}</style></head>
+<body style="background:{LIGHT['bg']}"><div class=wrap>{body}</div></body></html>"""
