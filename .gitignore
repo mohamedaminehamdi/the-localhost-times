@@ -2,3 +2,4 @@
 .venv/
 editions/
 __pycache__/
+.playwright-cli/
