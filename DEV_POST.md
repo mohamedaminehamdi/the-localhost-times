@@ -120,12 +120,11 @@ I handed my friend The Localhost Times. He likes it, and he said it will help hi
 
 ## My Agent Session
 
-I built this overnight with Claude Code as my pair programmer. Every commit is linked to the agent session that produced it with [Entire](https://entire.io). The checkpoints are pushed to the repo (`refs/entire/checkpoints/*`), so you can see *why* each piece of code exists, not just what it does.
+I built this overnight with Claude Code as my pair programmer: brainstorming the idea with my friend's brief, then the package, the prompt fixes from real test runs, the flip-through paper and the tests.
 
 ## Prize Categories
 
 - **Best Use of Gemma:** Gemma 4 (`gemma4:e4b`) is the editor. It runs locally through Ollama and writes every edition as schema-constrained JSON: the headline, the triage of your inbox, the news picks and the spoken script.
 - **GitHub Copilot:** the project is automated with GitHub Actions. One workflow runs the offline test suite and the CLI on every push and pull request. Another publishes the landing page and the demo edition to GitHub Pages.
-- **Entire:** the agent sessions behind the code are checkpointed with Entire and pushed alongside the repo.
 
 *Thanks for reading! If you print your own paper, tell me what was on your front page.* 🗞️

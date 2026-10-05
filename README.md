@@ -98,6 +98,6 @@ New integrations are the best way in, usually one function and one line. See [CO
 
 ## Built with
 
-[Gemma 4](https://ai.google.dev/gemma) · [Ollama](https://ollama.com) · [ElevenLabs](https://elevenlabs.io) · [StPageFlip](https://github.com/Nodlik/StPageFlip) · [Open-Meteo](https://open-meteo.com) · [Entire](https://entire.io)
+[Gemma 4](https://ai.google.dev/gemma) · [Ollama](https://ollama.com) · [ElevenLabs](https://elevenlabs.io) · [StPageFlip](https://github.com/Nodlik/StPageFlip) · [Open-Meteo](https://open-meteo.com)
 
 Built for a friend, for the [DEV Hacktoberfest 2026 Weekend Challenge](https://dev.to/challenges/hacktoberfest-weekend-2026-10-01). MIT licensed.
