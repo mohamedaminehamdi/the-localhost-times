@@ -17,13 +17,13 @@ body{margin:0;background:var(--table);color:var(--ink);font:17px/1.5 'Libre Casl
 .bar audio{height:36px;max-width:100%}
 .bar button{font:inherit;letter-spacing:inherit;background:none;color:#eee;border:1px solid #777;padding:9px 14px;cursor:pointer}
 .bar button:focus-visible,a:focus-visible{outline:2px solid #e9c46a;outline-offset:2px}
-#paper{max-width:1180px;margin:0 auto 40px;padding:0 16px}
+.desk{max-width:min(1180px,calc((100vh - 84px) * 1.418));margin:0 auto 24px;padding:0 16px}
 .page{background:var(--paper);background-image:radial-gradient(rgba(0,0,0,.035) 1px,transparent 1px);background-size:3px 3px}
 .inner{padding:clamp(18px,4vw,34px);height:100%;overflow:auto}
 body:not(.flip) .page{max-width:760px;margin:0 auto 18px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
 body:not(.flip) .bar .turn{display:none}
 .mast{text-align:center;border-bottom:4px double var(--ink);padding-bottom:6px}
-.mast h1{font:400 clamp(34px,7vw,64px)/1.05 UnifrakturMaguntia,'Old English Text MT',Georgia,serif;margin:6px 0}
+.mast h1{white-space:nowrap;font:400 clamp(28px,4.2vw,58px)/1.05 UnifrakturMaguntia,'Old English Text MT',Georgia,serif;margin:6px 0}
 .ears{display:flex;justify-content:space-between;gap:12px;font-size:11px;font-style:italic;color:var(--muted);text-align:left}
 .ears span:last-child{text-align:right}
 .dateline{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;border-top:1px solid var(--ink);margin-top:6px;
@@ -44,10 +44,11 @@ footer{border-top:1px solid var(--ink);padding-top:8px;font-size:12px;color:var(
 FLIP_JS = """
 const book = document.getElementById('paper');
 const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-if (window.St && !calm) {
+// Phones get a calm scrolling paper; spreads need room.
+if (window.St && !calm && innerWidth >= 760) {
   document.body.classList.add('flip');
   const pf = new St.PageFlip(book, {width: 560, height: 790, size: 'stretch', minWidth: 300, maxWidth: 820,
-    minHeight: 430, maxHeight: 1160, showCover: true, maxShadowOpacity: 0.45, mobileScrollSupport: true});
+    minHeight: 430, maxHeight: 1160, showCover: false, maxShadowOpacity: 0.45, mobileScrollSupport: true});
   pf.loadFromHTML(book.querySelectorAll('.page'));
   document.getElementById('prev').onclick = () => pf.flipPrev();
   document.getElementById('next').onclick = () => pf.flipNext();
@@ -77,7 +78,7 @@ def pages(name, day, ed, inputs, byline):
     """The edition as a list of page bodies, shared by the web and email versions."""
     schedule = [f"<b>{e(ev['time'])}</b> {e(ev['title'])}" + (f" <span class=src>{e(ev['where'])}</span>" if ev.get("where") else "")
                 for ev in inputs.get("calendar", [])]
-    replies = [f"<b>{e(r['from'])}</b>: {e(r['about'])}<br><span class=src>{e(r['why'])}</span>" for r in ed["needs_reply"]]
+    replies = [f"<b>{e(r['from'].split('<')[0].strip(' \"') or r['from'])}</b>: {e(r['about'])}<br><span class=src>{e(r['why'])}</span>" for r in ed["needs_reply"]]
     world = [f"<a href=\"{e(n['link'])}\">{e(n['title'])}</a> <span class=src>{e(n['source'])}</span><br>{e(n['summary'])}"
              for n in ed["news"]]
     front = f"""<header class=mast>
@@ -86,6 +87,7 @@ def pages(name, day, ed, inputs, byline):
 <div class=dateline><span>{e(day.strftime('%A, %B %-d, %Y'))}</span><span>Edition for {e(name)}</span><span>{e(byline)}</span></div>
 </header>
 <article class=lead><h2>{e(ed['headline'])}</h2><p class=lede>{e(ed['lede'])}</p></article>
+{_section("Top of the list", map(e, ed["must_do_today"][:3])) if ed["must_do_today"] else ""}
 <div class=inside>Inside: Today · Must do · Waiting on you · Worth knowing · The world</div>"""
     return [
         front,
@@ -103,7 +105,7 @@ def web(page_bodies, audio_src=None):
 <meta name=viewport content="width=device-width,initial-scale=1"><title>The Localhost Times</title>
 <link rel=preconnect href="https://fonts.gstatic.com" crossorigin><link rel=stylesheet href="{FONTS}"><style>{CSS}</style></head>
 <body><nav class=bar aria-label="Edition controls"><button id=prev class=turn>&larr; Prev</button>{player}<button id=next class=turn>Next &rarr;</button></nav>
-<main id=paper>{sheets}</main>
+<main class=desk><div id=paper>{sheets}</div></main>
 <script src="{PAGEFLIP}"></script><script>{FLIP_JS}</script></body></html>"""
 
 
