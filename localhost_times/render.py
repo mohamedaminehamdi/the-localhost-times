@@ -7,6 +7,7 @@ MOTTO = "All the news that's fit to print.<br>Printed on your machine."
 FONTS = ("https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400"
          "&family=Oswald:wght@500;600&display=swap")
 PAGEFLIP = "https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"
+PAGEFLIP_SRI = "sha384-L4eWrYFdqQ+LoGA0MMuqLqzV13x7SKkQaqacy4MED8e815dS37tTKlO/6xBEUpZW"  # pinned + integrity-checked
 
 CSS = """
 :root{--paper:#f4efe6;--ink:#1a1a1a;--muted:#5b554c;--accent:#7a1f1f;--table:#2b2723}
@@ -112,7 +113,7 @@ def web(page_bodies, audio_src=None):
 <link rel=preconnect href="https://fonts.gstatic.com" crossorigin><link rel=stylesheet href="{FONTS}"><style>{CSS}</style></head>
 <body><nav class=bar aria-label="Edition controls"><button id=prev class=turn>&larr; Prev</button>{player}<button id=next class=turn>Next &rarr;</button></nav>
 <main class=desk><div id=paper>{sheets}</div></main>
-<script src="{PAGEFLIP}"></script><script>{FLIP_JS}</script></body></html>"""
+<script src="{PAGEFLIP}" integrity="{PAGEFLIP_SRI}" crossorigin="anonymous"></script><script>{FLIP_JS}</script></body></html>"""
 
 
 def email(page_bodies):
