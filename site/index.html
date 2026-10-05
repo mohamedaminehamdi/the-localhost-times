@@ -3,520 +3,739 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Localhost Times</title>
-<meta name="description" content="A private morning newspaper with exactly one reader. Gemma 4 runs on your laptop, reads your inbox, calendar, tasks and the news, and prints your day on one page, plus a three-minute audio briefing.">
+<title>The Localhost Times — your morning, briefed privately</title>
+<meta name="description" content="A private morning briefing. Gemma 4 runs on your laptop, reads your inbox, calendar, tasks, weather and the news, and writes a one-page edition plus a three-minute audio briefing. Your inbox never leaves your machine.">
 <meta property="og:title" content="The Localhost Times">
 <meta property="og:description" content="All the news that's fit to print. Printed on your machine.">
 <meta property="og:type" content="website">
-<meta name="theme-color" content="#231f1b">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%237a1f1f'/%3E%3Ctext x='16' y='24' font-family='Georgia,serif' font-size='22' font-weight='700' text-anchor='middle' fill='%23f4efe6'%3ET%3C/text%3E%3C/svg%3E">
+<meta name="theme-color" content="#0a0a0b">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230a0a0b'/%3E%3Cpath d='M7 21a9 9 0 0 1 18 0z' fill='%23f5b947'/%3E%3Crect x='5' y='23' width='22' height='2.5' rx='1.25' fill='%23f5b947' opacity='.55'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Oswald:wght@500;600&family=UnifrakturMaguntia&display=swap">
-<script>
-  // Flipbook only when motion is welcome; everything else gets the stacked, scrolling paper.
-  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('flip');
-</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap">
+<script>document.documentElement.classList.add('js');</script>
 <style>
   :root {
-    --paper: #f4efe6;
-    --paper-shade: #e8e0d0;
-    --ink: #1a1a1a;
-    --ink-soft: #4f4840;
-    --hair: rgba(26, 26, 26, .28);
-    --accent: #7a1f1f;
-    --table: #231f1b;
-    --table-lift: #342e27;
-    --on-table: #efe7d8;
-    --on-table-soft: rgba(239, 231, 216, .7);
-    --mast: "UnifrakturMaguntia", "Old English Text MT", "Times New Roman", serif;
-    --serif: "Libre Caslon Text", Georgia, "Times New Roman", serif;
-    --cond: "Oswald", "Arial Narrow", "Roboto Condensed", sans-serif;
+    --bg: #0a0a0b;
+    --surface: #111114;
+    --surface-2: #17171b;
+    --border: rgba(255, 255, 255, .08);
+    --border-strong: rgba(255, 255, 255, .14);
+    --text: #ededef;
+    --muted: #a1a1aa;
+    --accent: #f5b947;
+    --accent-ink: #1a1405;
+    --accent-soft: rgba(245, 185, 71, .12);
+    --sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
     --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    --r-lg: 20px;
+    --r-md: 14px;
+    --r-sm: 10px;
+    --shadow: 0 1px 0 rgba(255, 255, 255, .04) inset, 0 20px 40px -24px rgba(0, 0, 0, .8);
   }
 
   *, *::before, *::after { box-sizing: border-box; }
   [hidden] { display: none !important; }
-  html { -webkit-text-size-adjust: 100%; }
+  html { -webkit-text-size-adjust: 100%; scroll-padding-top: 84px; color-scheme: dark; }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
   body {
     margin: 0;
-    min-height: 100vh;
-    background-color: var(--table);
-    background-image: radial-gradient(ellipse at 50% 35%, var(--table-lift), var(--table) 72%);
-    background-attachment: fixed;
-    color: var(--on-table);
-    font-family: var(--serif);
+    background-color: var(--bg);
+    color: var(--text);
+    font: 400 16px/1.6 var(--sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     overflow-x: clip;
   }
+  @media (min-width: 768px) { body { font-size: 17px; } }
   a { color: inherit; }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  img, svg, iframe { display: block; max-width: 100%; }
+  code, pre { font-family: var(--mono); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+  ::selection { background: rgba(245, 185, 71, .3); }
   .sr-only {
     position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
     overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
   }
+  .skip {
+    position: absolute; left: 16px; top: -60px; z-index: 50;
+    background: var(--accent); color: var(--accent-ink); padding: 10px 14px; border-radius: var(--r-sm);
+    font-weight: 600; text-decoration: none;
+  }
+  .skip:focus { top: 12px; }
 
-  main { padding: 24px 16px 32px; }
-  .stage { width: min(100%, 1400px); margin: 0 auto; }
-  html.flip .stage { width: min(100%, 1400px, max(300px, calc((100vh - 150px) * 1100 / 760))); }
-  html.flip .stage { width: min(100%, 1400px, max(300px, calc((100svh - 150px) * 1100 / 760))); }
-  @media (max-width: 799px) { main { padding-top: 16px; } html.flip .stage { width: 100%; } }
-  html.flip:not(.ready) #book { visibility: hidden; }
+  .wrap { width: min(100% - 32px, 1120px); margin-inline: auto; }
+  .accent-word { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--accent); letter-spacing: -.01em; }
 
-  /* ---------- Paper ---------- */
-  .page {
-    container-type: inline-size;
-    color: var(--ink);
-    background-color: var(--paper);
-    background-image:
-      radial-gradient(circle, rgba(26, 26, 26, .045) 0 .6px, transparent 1.1px),
-      radial-gradient(circle, rgba(122, 31, 31, .03) 0 .8px, transparent 1.4px),
-      radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, .45), transparent 65%),
-      linear-gradient(180deg, rgba(120, 95, 60, .03), rgba(120, 95, 60, .08));
-    background-size: 3px 3px, 7px 7px, 100% 100%, 100% 100%;
-    /* stacked (default / fallback) layout */
-    max-width: 760px;
-    margin: 0 auto 28px;
-    box-shadow: 0 1px 0 var(--paper-shade), 0 18px 40px rgba(0, 0, 0, .45);
-  }
-  .sheet {
-    padding: clamp(18px, 5.2cqi, 34px);
-    font-size: clamp(.875rem, 2.75cqi, 1rem);
-    line-height: 1.5;
-  }
-
-  /* flipbook layout: these selectors only match once StPageFlip has taken over */
-  .stf__parent { margin: 0 auto; }
-  .stf__parent .page { margin: 0; max-width: none; box-shadow: 0 10px 28px rgba(0, 0, 0, .35); }
-  .stf__parent .sheet {
-    height: 100%;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
-    scrollbar-color: var(--hair) transparent;
-  }
-  .stf__parent .page.--left .sheet { box-shadow: inset -22px 0 26px -22px rgba(0, 0, 0, .4); }
-  .stf__parent .page.--right .sheet { box-shadow: inset 22px 0 26px -22px rgba(0, 0, 0, .3); }
-
-  /* ---------- Type ---------- */
-  :where(.sheet) p { margin: 0 0 .7em; }
-  .sheet figure { margin: 0; }
-  .box p:last-child { margin-bottom: 0; }
-  .folio {
-    display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
-    font-family: var(--cond); font-weight: 500; font-size: .74rem; letter-spacing: .06em;
-    color: var(--ink-soft);
-    border-bottom: 1px solid var(--ink); padding-bottom: 5px; margin-bottom: 14px;
-  }
-  .folio .mini { font-family: var(--mast); font-weight: 400; font-size: 1.1rem; letter-spacing: 0; color: var(--ink); }
-  .kicker {
-    font-variant-caps: all-small-caps; letter-spacing: .07em;
-    color: var(--accent); font-size: 1.02em; margin: 0 0 .15rem;
-  }
-  .hed {
-    font-weight: 700; font-size: clamp(1.45rem, 6.4cqi, 2.45rem);
-    line-height: 1.06; letter-spacing: -.01em; margin: 0 0 .45rem; text-wrap: balance;
-  }
-  .dek { font-style: italic; color: var(--ink-soft); margin: 0 0 .9rem; font-size: 1.04em; }
-  h3.sub { font-size: 1.12em; line-height: 1.2; margin: 0 0 .35rem; }
-  .cols { columns: 2; column-gap: 1.4rem; column-rule: 1px solid var(--hair); }
-  .cols p, .justify p { hyphens: auto; -webkit-hyphens: auto; }
-  .drop::first-letter {
-    float: left; font-weight: 700; font-size: 3.55em; line-height: .8;
-    padding: .07em .08em 0 0; color: var(--accent);
-  }
-  .pull {
-    break-inside: avoid; margin: .3rem 0 .9rem; padding: .55rem .2rem;
-    border-top: 3px double var(--ink); border-bottom: 3px double var(--ink);
-    font-style: italic; font-size: 1.22em; line-height: 1.25; text-align: center; color: var(--accent);
-  }
-  .note { font-size: .86em; color: var(--ink-soft); }
-  code { font-family: var(--mono); font-size: .86em; }
-
-  /* ---------- Front page ---------- */
-  .ears {
-    display: flex; justify-content: space-between; gap: 12px;
-    font-family: var(--cond); font-weight: 500; font-size: .7rem; letter-spacing: .05em; color: var(--ink-soft);
-  }
-  .ears span { max-width: 46%; }
-  .ears span:last-child { text-align: right; }
-  .masthead {
-    font-family: var(--mast); font-weight: 400; text-align: center;
-    font-size: clamp(1.9rem, 9.6cqi, 4.4rem); line-height: 1.02;
-    margin: .25rem 0 .1rem; text-wrap: balance;
-  }
-  .tagline { text-align: center; font-style: italic; margin: 0 0 .55rem; font-size: .95em; }
-  .dateline {
-    display: flex; flex-wrap: wrap; justify-content: space-between; gap: .2rem 1rem;
-    border-top: 4px double var(--ink); border-bottom: 1px solid var(--ink);
-    padding: .32rem 0; font-family: var(--cond); font-weight: 500; font-size: .74rem; letter-spacing: .06em;
-  }
-  .front { display: grid; grid-template-columns: 1fr 32%; gap: 0 1.2rem; margin-top: 1rem; }
-  .front .side { border-left: 1px solid var(--hair); padding-left: 1.2rem; }
-  .lead .hed { font-size: clamp(1.6rem, 6.8cqi, 2.6rem); }
-  .second { border-top: 1px solid var(--ink); padding-top: .7rem; margin-top: .4rem; }
-  .cta { display: flex; flex-wrap: wrap; gap: .55rem; margin: .9rem 0 .4rem; }
+  /* ---------- Buttons ---------- */
   .btn {
-    display: inline-flex; align-items: center; min-height: 44px; padding: .5rem .95rem;
-    font-family: var(--cond); font-weight: 500; font-size: .95rem; letter-spacing: .04em;
-    text-decoration: none; color: var(--ink); border: 1.5px solid var(--ink); background: transparent;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 44px; padding: 0 18px; border-radius: 999px;
+    font: 600 15px/1 var(--sans); text-decoration: none; white-space: nowrap;
+    border: 1px solid transparent; cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease, transform .15s ease;
   }
-  .btn:hover { background: var(--ink); color: var(--paper); }
-  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--paper); }
-  .btn.primary:hover { background: var(--ink); border-color: var(--ink); }
-  .box { border: 1px solid var(--ink); padding: .6rem .75rem .7rem; margin-bottom: 1rem; }
-  .box h3 {
-    font-family: var(--cond); font-weight: 600; font-size: .82rem; letter-spacing: .1em; text-transform: uppercase;
-    margin: 0 0 .35rem; padding-bottom: .3rem; border-bottom: 1px solid var(--ink);
-  }
-  .index { list-style: none; margin: 0; padding: 0; }
-  .index a {
-    display: flex; justify-content: space-between; gap: .5rem; padding: .32rem 0;
-    border-bottom: 1px dotted var(--hair); text-decoration: none;
-  }
-  .index li:last-child a { border-bottom: 0; }
-  .index a:hover span:first-child { text-decoration: underline; }
-  .index a span:last-child { font-family: var(--cond); font-weight: 500; color: var(--accent); white-space: nowrap; }
-  .weather p { margin: 0 0 .4em; font-size: .92em; }
-  .weather .big { font-family: var(--cond); font-weight: 600; font-size: 1.35em; letter-spacing: .02em; margin-bottom: .1em; }
+  .btn svg { width: 16px; height: 16px; flex: none; }
+  .btn-primary { background: var(--accent); color: var(--accent-ink); box-shadow: 0 8px 24px -10px rgba(245, 185, 71, .6); }
+  .btn-primary:hover { background: #f8c766; }
+  .btn-ghost { background: rgba(255, 255, 255, .02); color: var(--text); border-color: var(--border-strong); }
+  .btn-ghost:hover { background: rgba(255, 255, 255, .06); border-color: rgba(255, 255, 255, .22); }
+  .btn:active { transform: translateY(1px); }
+  .btn-sm { min-height: 36px; padding: 0 14px; font-size: 14px; }
 
-  /* ---------- How it's made ---------- */
-  .flow { list-style: none; margin: .3rem 0 1.1rem; padding: 0; display: grid; gap: 1.15rem; }
-  .flow > li {
-    position: relative; display: grid; grid-template-columns: 5.4em 1fr; gap: .1rem .6rem; align-items: baseline;
-    border: 1px solid var(--ink); padding: .45rem .65rem; background: rgba(255, 255, 255, .28);
+  /* ---------- Nav ---------- */
+  .nav {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(10, 10, 11, .72);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    backdrop-filter: blur(14px) saturate(150%);
+    border-bottom: 1px solid var(--border);
   }
-  .flow > li:not(:first-child)::before {
-    content: ""; position: absolute; left: 50%; top: calc(-1.15rem - 1px); height: 1.15rem; border-left: 1px solid var(--ink);
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 64px; }
+  .wordmark {
+    display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+    font-family: var(--serif); font-style: italic; font-size: 22px; line-height: 1; letter-spacing: -.01em; white-space: nowrap;
   }
-  .flow > li:not(:first-child)::after {
-    content: ""; position: absolute; left: calc(50% - 4px); top: -6px;
-    border-left: 4.5px solid transparent; border-right: 4.5px solid transparent; border-top: 6px solid var(--ink);
+  .wordmark svg { width: 22px; height: 22px; flex: none; }
+  .nav-links { display: none; gap: 4px; margin: 0; padding: 0; list-style: none; }
+  .nav-links a {
+    display: inline-flex; align-items: center; min-height: 36px; padding: 0 12px; border-radius: 999px;
+    color: var(--muted); font-size: 14px; font-weight: 500; text-decoration: none;
   }
-  .flow .step { font-family: var(--cond); font-weight: 600; font-size: .95em; letter-spacing: .05em; }
-  .flow .local { border: 2px solid var(--accent); }
-  .flow .local .step { color: var(--accent); }
-  .flow .split { grid-template-columns: 1fr 1fr; gap: .6rem; border: 0; padding: 0; background: none; }
-  .flow .split > div { border: 1px solid var(--ink); padding: .45rem .65rem; background: rgba(255, 255, 255, .28); }
-  .flow .split .step { display: block; }
-  .flow small { font-size: .9em; color: var(--ink-soft); }
-  .stamp {
-    display: inline-block; font-family: var(--cond); font-weight: 600; letter-spacing: .05em;
-    color: var(--accent); border: 1px solid var(--accent); padding: 0 .3em; margin-right: .35em; font-size: .85em;
-  }
-  .footnote { border-top: 1px solid var(--ink); padding-top: .5rem; margin-top: .3rem; font-size: .9em; font-style: italic; }
+  .nav-links a:hover { color: var(--text); background: rgba(255, 255, 255, .05); }
+  @media (min-width: 820px) { .nav-links { display: flex; } }
 
-  /* ---------- Classifieds ---------- */
-  .classifieds { columns: 2 13rem; column-gap: 1rem; column-rule: 1px solid var(--hair); margin-top: .2rem; }
-  .ad { break-inside: avoid; border: 1px solid var(--ink); padding: .45rem .6rem .5rem; margin: 0 0 .8rem; font-size: .92em; line-height: 1.38; }
-  .ad h3 {
-    font-family: var(--cond); font-weight: 600; font-size: .92rem; letter-spacing: .08em; text-transform: uppercase;
-    margin: 0 0 .2rem; display: flex; justify-content: space-between; gap: .5rem; align-items: baseline;
+  /* ---------- Hero ---------- */
+  .hero { position: relative; overflow: clip; padding: clamp(48px, 7vw, 88px) 0 clamp(64px, 8vw, 96px); text-align: center; }
+  .hero::before {
+    content: ""; position: absolute; inset: -10% -20% auto; height: 820px; z-index: -1; pointer-events: none;
+    background:
+      radial-gradient(ellipse 50% 45% at 50% 28%, rgba(245, 185, 71, .20), transparent 70%),
+      radial-gradient(ellipse 30% 25% at 50% 20%, rgba(255, 214, 140, .10), transparent 70%);
   }
-  .ad h3 small { font-family: var(--serif); font-weight: 400; font-style: italic; letter-spacing: 0; text-transform: none; font-size: .82rem; color: var(--ink-soft); }
-  .ad p { margin: .2rem 0 0; }
-  .names { list-style: none; margin: 0; padding: 0; }
-  .names li { display: inline; }
-  .names li:not(:last-child)::after { content: ", "; }
-  .ad.wanted { border: 2px solid var(--accent); text-align: center; }
-  .ad.wanted h3 { display: block; color: var(--accent); }
+  .hero::after {
+    content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, .035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, .035) 1px, transparent 1px);
+    background-size: 56px 56px;
+    background-position: center top;
+    -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 20%, #000, transparent 75%);
+    mask-image: radial-gradient(ellipse 60% 50% at 50% 20%, #000, transparent 75%);
+  }
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px; margin: 0 0 28px;
+    padding: 6px 14px 6px 10px; border-radius: 999px;
+    background: rgba(255, 255, 255, .03); border: 1px solid var(--border-strong);
+    color: var(--muted); font-size: 13px; font-weight: 500;
+  }
+  @media (max-width: 380px) { .pill { font-size: 12px; padding-inline: 8px 12px; } }
+  .pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); flex: none; }
+  h1 {
+    margin: 0 auto; max-width: 14ch;
+    font-size: clamp(2.6rem, 8.4vw, 5.5rem); font-weight: 600; line-height: 1.02; letter-spacing: -.035em;
+    text-wrap: balance;
+  }
+  h1 .accent-word { font-size: 1.08em; letter-spacing: -.02em; }
+  .lede { max-width: 38em; margin: 24px auto 0; color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.2rem); line-height: 1.55; text-wrap: pretty; }
+  .ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 32px; }
 
-  /* ---------- Editorial ---------- */
-  .ledger { width: 100%; border-collapse: collapse; font-size: .9em; line-height: 1.38; margin: .4rem 0 1rem; }
-  .ledger caption {
-    text-align: left; font-family: var(--cond); font-weight: 600; font-size: .82rem; letter-spacing: .1em; text-transform: uppercase;
-    padding-bottom: .3rem; border-bottom: 3px double var(--ink);
+  .browser {
+    position: relative; margin: clamp(40px, 6vw, 60px) auto 0; text-align: left;
+    background: var(--surface); border: 1px solid rgba(245, 185, 71, .22); border-radius: var(--r-lg);
+    box-shadow:
+      0 0 0 6px rgba(255, 255, 255, .02),
+      0 40px 100px -30px rgba(245, 185, 71, .28),
+      0 30px 60px -20px rgba(0, 0, 0, .7);
+    overflow: hidden;
   }
-  .ledger th, .ledger td { text-align: left; vertical-align: top; padding: .42rem .6rem .42rem 0; border-bottom: 1px solid var(--hair); }
-  .ledger th { width: 36%; font-weight: 700; }
-  .ledger td:last-child, .ledger th:last-child { padding-right: 0; }
-  .runin strong { font-variant-caps: all-small-caps; letter-spacing: .05em; font-size: 1.08em; color: var(--accent); }
-  .signoff { text-align: right; font-style: italic; }
+  .browser-bar {
+    display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px;
+    height: 44px; padding: 0 14px; background: var(--surface-2); border-bottom: 1px solid var(--border);
+  }
+  .lights { display: flex; gap: 7px; }
+  .lights i { width: 11px; height: 11px; border-radius: 50%; background: #3a3a40; }
+  .lights i:nth-child(1) { background: #ff5f57; } .lights i:nth-child(2) { background: #febc2e; } .lights i:nth-child(3) { background: #28c840; }
+  .url {
+    justify-self: center; display: flex; align-items: center; gap: 6px; min-width: 0; max-width: 100%;
+    padding: 5px 14px; border-radius: 8px; background: rgba(0, 0, 0, .35); border: 1px solid var(--border);
+    font-size: 13px; color: var(--text); white-space: nowrap; overflow: hidden;
+  }
+  .url svg { width: 12px; height: 12px; color: var(--muted); flex: none; }
+  .url span { color: var(--muted); }
+  .browser-bar .open { font-size: 13px; font-weight: 500; color: var(--muted); text-decoration: none; padding: 4px 6px; }
+  .browser-bar .open:hover { color: var(--text); }
+  .browser iframe { width: 100%; aspect-ratio: 9 / 14; border: 0; background: #121110; }
+  @media (min-width: 700px) { .browser iframe { aspect-ratio: 16 / 10; } }
+  @media (max-width: 480px) { .browser-bar .open { display: none; } .browser-bar { grid-template-columns: auto 1fr; } }
+  .caption { margin: 18px auto 0; max-width: 40em; color: var(--muted); font-size: 14px; }
 
-  /* ---------- Subscribe ---------- */
-  .code { margin: .3rem 0 .9rem; }
-  .code-head {
-    display: flex; justify-content: space-between; align-items: center; gap: .5rem;
-    font-family: var(--cond); font-weight: 500; font-size: .78rem; letter-spacing: .06em; color: var(--ink-soft);
-    border-bottom: 1px solid var(--ink); padding-bottom: .2rem;
+  /* ---------- Sections ---------- */
+  .sec { padding: clamp(72px, 10vw, 128px) 0; border-top: 1px solid var(--border); }
+  .sec-head { max-width: 40rem; margin-bottom: clamp(36px, 5vw, 56px); }
+  h2 {
+    margin: 0; font-size: clamp(2rem, 4.6vw, 3.1rem); font-weight: 600; line-height: 1.08; letter-spacing: -.03em; text-wrap: balance;
   }
-  .copy {
-    font-family: var(--cond); font-weight: 500; font-size: .78rem; letter-spacing: .06em;
-    background: var(--paper); color: var(--ink); border: 1px solid var(--ink); padding: .25rem .6rem; min-height: 32px; cursor: pointer;
+  .sec-head p { margin: 16px 0 0; color: var(--muted); font-size: 1.08em; text-wrap: pretty; }
+  h3 { margin: 0; font-size: 1.08rem; font-weight: 600; letter-spacing: -.01em; line-height: 1.3; }
+
+  /* ---------- How it works ---------- */
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  @media (min-width: 640px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1000px) { .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .step {
+    position: relative; padding: 24px; border-radius: var(--r-lg);
+    background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow);
   }
-  .copy:hover { background: var(--ink); color: var(--paper); }
-  pre {
-    margin: 0; padding: .6rem .7rem; background: rgba(122, 95, 60, .1); border-left: 3px solid var(--accent);
-    font-family: var(--mono); font-size: .78em; line-height: 1.55; color: var(--ink);
-    white-space: pre-wrap; overflow-wrap: anywhere;
+  .step-num { display: block; margin-bottom: clamp(20px, 4vw, 40px); font: 500 13px/1 var(--mono); color: var(--muted); }
+  .step h3 { font-size: 1.25rem; margin-bottom: 8px; }
+  .step p { margin: 0; color: var(--muted); font-size: 15px; }
+  .step.local { border-color: rgba(245, 185, 71, .35); background: linear-gradient(180deg, rgba(245, 185, 71, .07), transparent 60%), var(--surface); }
+  .step.local .step-num { color: var(--accent); }
+  .tag {
+    position: absolute; top: 20px; right: 20px;
+    display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px;
+    background: var(--accent-soft); color: var(--accent); font-size: 12px; font-weight: 600;
   }
-  .builder { margin-top: .4rem; }
-  .builder .grp { border: 0; border-top: 1px solid var(--hair); margin: 0; padding: .35rem 0; min-width: 0; }
+  .sources { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 0; padding: 0; list-style: none; }
+  .sources li { padding: 3px 9px; border-radius: 999px; border: 1px solid var(--border); font-size: 12.5px; color: var(--muted); }
+
+  /* ---------- Bento ---------- */
+  .bento { display: grid; gap: 12px; grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 720px) { .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); } .t-a { grid-column: span 2; } }
+  @media (min-width: 1000px) {
+    .bento { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .t-a { grid-column: span 4; } .t-b { grid-column: span 2; }
+    .t-c, .t-d, .t-e { grid-column: span 2; }
+  }
+  .tile {
+    display: flex; flex-direction: column; gap: 24px; min-width: 0;
+    padding: 24px; border-radius: var(--r-lg);
+    background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow);
+  }
+  .tile .copy { margin-top: auto; }
+  .tile h3 { margin-bottom: 6px; font-size: 1.15rem; }
+  .tile p { margin: 0; color: var(--muted); font-size: 15px; max-width: 34em; }
+  .viz { border-radius: var(--r-md); background: var(--bg); border: 1px solid var(--border); padding: 14px; min-width: 0; }
+
+  .inbox { display: grid; gap: 2px; padding: 6px; }
+  .mail {
+    display: grid; grid-template-columns: 8px minmax(0, 9em) minmax(0, 1fr) auto; align-items: center; gap: 12px;
+    padding: 10px 10px; border-radius: 8px; font-size: 14px;
+  }
+  .mail:nth-child(odd) { background: rgba(255, 255, 255, .025); }
+  .mail .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px rgba(245, 185, 71, .5); }
+  .mail b { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mail .subj { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .mail .state { font-size: 12px; color: var(--accent); white-space: nowrap; }
+  @media (max-width: 520px) {
+    .mail { grid-template-columns: 8px minmax(0, 1fr) auto; }
+    .mail .subj { display: none; }
+  }
+
+  .json { margin: 0; font-size: 12.5px; line-height: 1.7; color: var(--muted); white-space: pre-wrap; overflow-wrap: anywhere; }
+  .json .k { color: var(--text); }
+  .json .s { color: var(--accent); }
+
+  .player { display: grid; gap: 12px; }
+  .wave { display: flex; align-items: center; gap: 3px; height: 44px; }
+  .wave i { flex: 1; min-width: 2px; height: var(--h); border-radius: 2px; background: rgba(255, 255, 255, .18); }
+  .wave i.on { background: var(--accent); }
+  .time { display: flex; justify-content: space-between; font: 500 12px/1 var(--mono); color: var(--muted); }
+
+  .status { display: flex; align-items: center; gap: 14px; }
+  .status .ico {
+    display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; flex: none;
+    background: var(--surface-2); border: 1px solid var(--border); color: var(--accent);
+  }
+  .status .ico svg { width: 22px; height: 22px; }
+  .status dl { margin: 0; display: grid; grid-template-columns: auto auto; gap: 4px 14px; font-size: 13px; }
+  .status dt { color: var(--muted); }
+  .status dd { margin: 0; }
+
+  .receipt { margin: 0; padding: 8px 14px; list-style: none; font: 13px/1 var(--mono); }
+  .receipt li { display: flex; gap: 8px; align-items: baseline; padding: 6px 0; color: var(--muted); }
+  .receipt li::after { content: ""; order: 1; flex: 1; border-bottom: 1px dotted rgba(255, 255, 255, .18); }
+  .receipt li span:last-child { order: 2; color: var(--text); }
+  .receipt li.total { margin-top: 4px; padding-top: 10px; border-top: 1px solid var(--border); color: var(--text); font-weight: 600; }
+  .receipt li.total::after { border: 0; }
+  .receipt li.total span:last-child { color: var(--accent); }
+
+  /* ---------- Integrations ---------- */
+  .groups {
+    display: grid; grid-template-columns: minmax(0, 1fr); gap: 1px;
+    background: var(--border); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden;
+  }
+  @media (min-width: 760px) { .groups { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .group { padding: 22px 24px; background: var(--surface); }
+  .group h3 { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; font-size: 1rem; }
+  .group h3 small { font-size: 13px; font-weight: 400; color: var(--muted); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+  .chips li, .chip {
+    display: inline-flex; align-items: center; gap: 8px; min-height: 32px; padding: 0 12px; border-radius: 999px;
+    background: var(--surface-2); border: 1px solid var(--border); font-size: 14px; font-weight: 500;
+  }
+  .chips li.more { background: transparent; color: var(--muted); border-style: dashed; border-color: var(--border-strong); }
+  .int-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-top: 20px; }
+  .int-foot p { margin: 0; color: var(--muted); font-size: 15px; }
+  .int-foot code { color: var(--text); font-size: .92em; }
+  .chip.wanted {
+    text-decoration: none; color: var(--accent); background: var(--accent-soft);
+    border: 1px dashed rgba(245, 185, 71, .5); min-height: 40px; padding: 6px 16px; white-space: normal; line-height: 1.35;
+  }
+  .chip.wanted:hover { background: rgba(245, 185, 71, .18); }
+  .chip.wanted b { font-weight: 600; }
+  .chip.wanted span { color: var(--text); font-weight: 400; }
+
+  /* ---------- Privacy ---------- */
+  .privacy-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(40px, 6vw, 72px); }
+  @media (min-width: 960px) { .privacy-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: start; } }
+  .privacy-grid .sec-head { margin-bottom: 0; }
+  .whys { list-style: none; margin: 36px 0 0; padding: 0; display: grid; gap: 20px; }
+  .whys li { display: grid; grid-template-columns: 20px 1fr; gap: 12px; }
+  .whys li svg { width: 20px; height: 20px; margin-top: 3px; color: var(--accent); }
+  .whys strong { display: block; font-weight: 600; }
+  .whys span { color: var(--muted); font-size: 15px; }
+  .ledger-card { border-radius: var(--r-lg); background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; }
+  .ledger { width: 100%; border-collapse: collapse; font-size: 15px; }
+  .ledger caption { text-align: left; padding: 20px 24px 14px; font-weight: 600; font-size: 1rem; border-bottom: 1px solid var(--border); }
+  .ledger th, .ledger td { text-align: left; vertical-align: top; padding: 16px 24px; border-bottom: 1px solid var(--border); }
+  .ledger tr:last-child th, .ledger tr:last-child td { border-bottom: 0; }
+  .ledger th { width: 38%; font-weight: 500; }
+  .ledger td { color: var(--muted); }
+  .ledger td strong { color: var(--text); font-weight: 500; }
+  @media (max-width: 560px) {
+    .ledger, .ledger tbody, .ledger tr, .ledger th, .ledger td { display: block; width: auto; }
+    .ledger th { padding: 16px 20px 2px; border: 0; }
+    .ledger td { padding: 0 20px 16px; }
+    .ledger caption { display: block; padding: 18px 20px 14px; }
+  }
+
+  /* ---------- Get started ---------- */
+  .start-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  @media (min-width: 960px) { .start-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: start; } }
+  .start-grid .sec-head { margin-bottom: 0; }
+  .need { margin: 24px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; color: var(--muted); font-size: 15px; }
+  .need li { display: flex; gap: 10px; align-items: baseline; }
+  .need li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex: none; transform: translateY(-2px); }
+  .need code { color: var(--text); font-size: .92em; }
+  .term { border-radius: var(--r-lg); background: #0d0d10; border: 1px solid var(--border-strong); box-shadow: var(--shadow); overflow: hidden; }
+  .term + .term { margin-top: 12px; }
+  .term-head {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 8px 8px 8px 16px; border-bottom: 1px solid var(--border); background: var(--surface);
+    font-size: 13px; color: var(--muted);
+  }
+  .term-head span { display: inline-flex; align-items: center; gap: 8px; }
+  .term-head span svg { width: 14px; height: 14px; }
+  .term pre {
+    margin: 0; padding: 18px 20px; font-size: 13.5px; line-height: 1.75; color: var(--text);
+    white-space: pre; overflow-x: auto; tab-size: 2;
+  }
+  @media (max-width: 560px) { .term pre { font-size: 12.5px; padding: 16px; } }
+  .term pre .c { color: #6f6f78; }
+  .copy-btn {
+    display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 12px; border-radius: 8px;
+    background: rgba(255, 255, 255, .04); border: 1px solid var(--border-strong); color: var(--text);
+    font: 500 13px/1 var(--sans); cursor: pointer; transition: background-color .15s ease;
+  }
+  .copy-btn:hover { background: rgba(255, 255, 255, .09); }
+  .copy-btn svg { width: 14px; height: 14px; }
+  .copy-btn[data-state="done"] { color: var(--accent); border-color: rgba(245, 185, 71, .4); }
+
+  .builder-wrap { margin-top: clamp(56px, 8vw, 96px); }
+  .builder-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; margin-bottom: 24px; }
+  .builder-head h3 { font-size: clamp(1.4rem, 2.6vw, 1.75rem); letter-spacing: -.025em; }
+  .builder-head p { margin: 8px 0 0; color: var(--muted); font-size: 15px; }
+  .local-note {
+    display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px;
+    background: var(--accent-soft); color: var(--accent); font-size: 13.5px; font-weight: 500; line-height: 1.35;
+  }
+  .local-note svg { width: 15px; height: 15px; flex: none; }
+  .builder-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  @media (min-width: 960px) { .builder-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; } }
+
+  .builder { margin: 0; padding: 6px 20px; border-radius: var(--r-lg); background: var(--surface); border: 1px solid var(--border); }
+  .grp { border: 0; margin: 0; padding: 14px 0; min-width: 0; border-bottom: 1px solid var(--border); }
+  .grp:last-child { border-bottom: 0; }
   .builder legend { padding: 0; float: left; width: 100%; }
   .builder legend + * { clear: both; }
-  .builder legend label { display: flex; align-items: center; gap: .55rem; min-height: 36px; cursor: pointer; font-weight: 700; }
-  .builder legend small { font-weight: 400; font-style: italic; color: var(--ink-soft); }
-  .builder input[type="checkbox"] { accent-color: var(--accent); width: 1.1rem; height: 1.1rem; margin: 0; flex: none; }
-  .fields { display: grid; gap: .55rem; padding: .25rem 0 .45rem 1.65rem; }
-  .fields.always { padding-left: 0; }
-  .fields label { display: grid; gap: .2rem; font-size: .88em; min-width: 0; }
-  .fields label code { color: var(--accent); }
+  .builder legend label {
+    display: flex; align-items: center; gap: 12px; min-height: 36px; cursor: pointer; font-weight: 600; font-size: 15px;
+  }
+  .builder legend small { font-weight: 400; color: var(--muted); font-size: 13px; }
+  input[type="checkbox"][data-toggle] {
+    -webkit-appearance: none; appearance: none; margin: 0 0 0 auto; flex: none; cursor: pointer;
+    position: relative; width: 38px; height: 22px; border-radius: 999px;
+    background: var(--surface-2); border: 1px solid var(--border-strong);
+    transition: background-color .18s ease, border-color .18s ease;
+  }
+  input[type="checkbox"][data-toggle]::before {
+    content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%;
+    background: var(--muted); transition: transform .18s ease, background-color .18s ease;
+  }
+  input[type="checkbox"][data-toggle]:checked { background: var(--accent); border-color: var(--accent); }
+  input[type="checkbox"][data-toggle]:checked::before { transform: translateX(16px); background: var(--accent-ink); }
+  .fields { display: grid; gap: 12px; padding: 12px 0 6px; }
+  .fields.always { padding-top: 6px; }
+  .fields label { display: grid; gap: 6px; font-size: 13.5px; color: var(--muted); min-width: 0; }
+  .fields label code { color: var(--accent); font-size: 12px; margin-left: 4px; }
   .fields input, .fields select {
-    width: 100%; min-width: 0; font-family: var(--mono); font-size: 15px; color: var(--ink);
-    background: #fbf8f2; border: 1px solid var(--ink-soft); border-radius: 0; padding: .45rem .5rem; min-height: 40px;
+    width: 100%; min-width: 0; min-height: 42px; padding: 0 12px;
+    font: 14px/1.4 var(--mono); color: var(--text);
+    background: var(--bg); border: 1px solid var(--border-strong); border-radius: var(--r-sm);
+    transition: border-color .15s ease, box-shadow .15s ease;
   }
-  .fields input::placeholder { color: #857b70; }
-  .fields input:focus-visible, .fields select:focus-visible { outline: 2px solid var(--accent); outline-offset: 0; border-color: var(--accent); }
+  .fields select {
+    -webkit-appearance: none; appearance: none; padding-right: 36px; cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23a1a1aa' stroke-width='1.5'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 12px center; background-size: 14px;
+  }
+  .fields input::placeholder { color: #6b6b74; }
+  .fields input:hover, .fields select:hover { border-color: rgba(255, 255, 255, .22); }
+  .fields input:focus-visible, .fields select:focus-visible {
+    outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(245, 185, 71, .2);
+  }
   @media (pointer: coarse) { .fields input, .fields select { font-size: 16px; } }
-  .env-out { margin-top: .9rem; }
-  .env-out pre { min-height: 5em; }
-  .privacy-note { font-size: .88em; font-style: italic; border-left: 3px solid var(--accent); padding-left: .6rem; margin: .2rem 0 .6rem; }
 
-  /* ---------- Back cover ---------- */
-  .back .sheet { display: flex; flex-direction: column; text-align: center; }
-  .back .inner { margin: auto 0; }
-  .back .masthead { font-size: clamp(1.7rem, 8.5cqi, 3.4rem); }
-  .back .rule { border: 0; border-top: 4px double var(--ink); margin: .6rem auto 1rem; width: 60%; }
-  .back .box { text-align: left; max-width: 30em; margin: 1.1rem auto; }
-  .back .cta { justify-content: center; }
-  .thirty { font-family: var(--cond); font-weight: 600; letter-spacing: .3em; margin-top: 1.2rem; }
+  .preview { position: sticky; top: 84px; }
+  .preview pre { white-space: pre-wrap; overflow-wrap: anywhere; min-height: 14em; max-height: min(70vh, 640px); overflow: auto; }
+  .preview-note { margin: 12px 4px 0; color: var(--muted); font-size: 14px; }
+  .preview-note code { color: var(--text); font-size: .92em; }
+  @media (max-width: 959px) { .preview { position: static; } }
 
-  /* ---------- Narrow pages (phones, small spreads) ---------- */
-  @container (max-width: 440px) {
-    .cols { columns: 1; }
-    .dateline { justify-content: center; column-gap: 1.2rem; }
-    .front { grid-template-columns: 1fr; }
-    .front .side { border-left: 0; padding-left: 0; border-top: 4px double var(--ink); padding-top: .8rem; margin-top: .6rem; }
-    .flow > li { grid-template-columns: 1fr; }
-    .flow .split { grid-template-columns: 1fr; }
-    .ledger th { width: 40%; }
-  }
+  /* ---------- Footer ---------- */
+  .foot { border-top: 1px solid var(--border); padding: 48px 0 56px; }
+  .foot .wrap { display: grid; gap: 24px; }
+  @media (min-width: 760px) { .foot .wrap { grid-template-columns: 1fr auto; align-items: end; } }
+  .foot p { margin: 8px 0 0; color: var(--muted); font-size: 14px; }
+  .foot .tagline { font-family: var(--serif); font-style: italic; font-size: 18px; color: var(--text); margin-top: 14px; }
+  .foot nav ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
 
-  /* ---------- Controls on the table ---------- */
-  .controls {
-    display: none; align-items: center; justify-content: center; gap: .9rem;
-    margin: 16px auto 0; font-family: var(--cond); color: var(--on-table);
+  /* ---------- Motion ---------- */
+  @media (prefers-reduced-motion: no-preference) {
+    .js .reveal { opacity: 0; transform: translateY(14px); transition: opacity .7s cubic-bezier(.2, .7, .2, 1), transform .7s cubic-bezier(.2, .7, .2, 1); transition-delay: var(--d, 0s); }
+    .js .reveal.in { opacity: 1; transform: none; }
   }
-  html.ready .controls { display: flex; }
-  .controls button {
-    font: inherit; font-weight: 500; font-size: .95rem; letter-spacing: .05em;
-    background: transparent; color: var(--on-table); border: 1px solid rgba(239, 231, 216, .55);
-    min-height: 44px; padding: .5rem 1rem; cursor: pointer;
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; }
   }
-  .controls button:hover:not([aria-disabled="true"]) { background: var(--on-table); color: var(--table); }
-  .controls button[aria-disabled="true"] { opacity: .35; cursor: default; }
-  .controls :focus-visible { outline-color: var(--on-table); }
-  #indicator { min-width: 9em; text-align: center; font-variant-numeric: tabular-nums; letter-spacing: .04em; }
-  .hint { display: none; text-align: center; font-style: italic; font-size: .82rem; color: var(--on-table-soft); margin: 8px 0 0; }
-  html.ready .hint { display: block; }
-  @media (max-width: 420px) {
-    .controls { gap: .45rem; }
-    .controls button { padding: .5rem .7rem; }
-    #indicator { min-width: 7.5em; font-size: .9rem; }
-  }
+  iframe { color-scheme: dark; } /* demo edition follows the page: dark */
 </style>
 </head>
 <body>
-<main>
-  <div class="stage">
-    <div id="book">
+<a class="skip" href="#main">Skip to content</a>
 
-      <!-- Page 1: front cover -->
-      <article class="page cover" id="p1" data-density="hard" aria-labelledby="mast">
-        <div class="sheet">
-          <div class="ears">
-            <span>Price: free. MIT licensed.</span>
-            <span>Self-hosted with Python, uv and Ollama.</span>
-          </div>
-          <h1 class="masthead" id="mast">The Localhost Times</h1>
-          <p class="tagline">All the news that's fit to print. Printed on your machine.</p>
-          <div class="dateline">
-            <span>Vol. 1 · No. 1</span>
-            <time data-today>Today's edition</time>
-            <span>Printed on localhost</span>
-          </div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-mark" viewBox="0 0 24 24"><path d="M4 15.5a8 8 0 0 1 16 0z" fill="#f5b947"/><rect x="2" y="17.5" width="20" height="2" rx="1" fill="#f5b947" opacity=".55"/></symbol>
+  <symbol id="i-gh" viewBox="0 0 16 16"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+  <symbol id="i-term" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4 17 6-5-6-5"/><path d="M12 19h8"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+</svg>
 
-          <div class="front">
-            <div class="lead">
-              <p class="kicker">A newspaper with one reader</p>
-              <h2 class="hed">Your Day, Printed on Your Machine</h2>
-              <div class="justify">
-                <p class="drop">Every morning, The Localhost Times reads your inbox, today's calendar, your tasks and the news, then hands you a one-page newspaper and a three-minute audio briefing to play while you brush your teeth.</p>
-                <p>It's written by Gemma 4, an open-weight model running on your own laptop through Ollama. Your inbox never leaves the house.</p>
-              </div>
-              <div class="cta">
-                <a class="btn primary" href="demo/">Read today's demo edition →</a>
-                <a class="btn" href="https://github.com/mohamedaminehamdi/the-localhost-times">View on GitHub</a>
-              </div>
-              <p class="note">The demo is written for Sam, a reader we made up, from an inbox we made up.</p>
+<header class="nav">
+  <div class="wrap">
+    <a class="wordmark" href="#top" aria-label="The Localhost Times, back to top">
+      <svg aria-hidden="true"><use href="#i-mark"/></svg>The Localhost Times
+    </a>
+    <nav aria-label="Main">
+      <ul class="nav-links">
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#integrations">Integrations</a></li>
+        <li><a href="#privacy">Privacy</a></li>
+        <li><a href="#start">Get started</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn-ghost btn-sm" href="https://github.com/mohamedaminehamdi/the-localhost-times">
+      <svg aria-hidden="true"><use href="#i-gh"/></svg>GitHub
+    </a>
+  </div>
+</header>
 
-              <section class="second" aria-labelledby="friend">
-                <h3 class="sub" id="friend">A Friend Asked for It</h3>
-                <p>They wanted their whole day on one page: the emails that need an answer, the meetings, the to-dos, the weather and a few headlines. Nothing to scroll, nothing to sign up for. This is that page, printed fresh every morning. Built for the DEV Hacktoberfest 2026 “Build for a Friend” challenge.</p>
-              </section>
+<main id="main">
+  <!-- Hero -->
+  <section class="hero" id="top" aria-labelledby="h-hero">
+    <div class="wrap">
+      <p class="pill reveal">Open source · Runs on your laptop · Gemma 4</p>
+      <h1 id="h-hero" class="reveal" style="--d:.05s">Your morning, briefed. <span class="accent-word">Privately.</span></h1>
+      <p class="lede reveal" style="--d:.1s">Every morning, Gemma 4 reads your inbox, calendar and tasks on your own laptop, then hands you a one-page edition and a three-minute audio briefing. Your inbox never leaves your machine.</p>
+      <div class="ctas reveal" style="--d:.15s">
+        <a class="btn btn-primary" href="demo/">Read today's edition →</a>
+        <a class="btn btn-ghost" href="https://github.com/mohamedaminehamdi/the-localhost-times">
+          <svg aria-hidden="true"><use href="#i-gh"/></svg>Star on GitHub
+        </a>
+      </div>
+
+      <figure class="reveal" style="--d:.25s; margin:0">
+        <div class="browser">
+          <div class="browser-bar">
+            <div class="lights" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="url" aria-hidden="true">
+              <svg><use href="#i-lock"/></svg>localhost <span>/</span> editions <span>/</span> today
             </div>
-
-            <aside class="side" aria-label="Index and weather">
-              <nav class="box" aria-labelledby="idx">
-                <h3 id="idx">Index</h3>
-                <ul class="index">
-                  <li><a href="#p2"><span>How it's made</span><span>p. 2</span></a></li>
-                  <li><a href="#p3"><span>Integrations</span><span>p. 3</span></a></li>
-                  <li><a href="#p4"><span>Privacy</span><span>p. 4</span></a></li>
-                  <li><a href="#p5"><span>Subscribe</span><span>p. 5</span></a></li>
-                  <li><a href="#p6"><span>Colophon</span><span>p. 6</span></a></li>
-                </ul>
-              </nav>
-              <section class="box weather" aria-labelledby="wx">
-                <h3 id="wx">Weather</h3>
-                <p class="big">Clear on localhost</p>
-                <p>Your inbox stays indoors all day. No uploads in the forecast.</p>
-                <p class="note">Real editions carry your real forecast, from Open-Meteo.</p>
-              </section>
-            </aside>
+            <a class="open" href="demo/">Open full page</a>
           </div>
+          <iframe src="demo/" title="Today's demo edition" loading="lazy"></iframe>
         </div>
-      </article>
+        <figcaption class="caption">A real edition, written by Gemma 4 for Sam, a reader we made up. Real news, real weather.</figcaption>
+      </figure>
+    </div>
+  </section>
 
-      <!-- Page 2: how it's made -->
-      <article class="page" id="p2" aria-labelledby="h-made">
-        <div class="sheet">
-          <div class="folio"><span>p. 2</span><span>How it's made</span><span class="mini">The Localhost Times</span></div>
-          <p class="kicker">The printing press</p>
-          <h2 class="hed" id="h-made">At 06:59, the Paper Writes Itself</h2>
-          <p class="dek">Four steps, one laptop, no newsroom.</p>
+  <!-- How it works -->
+  <section class="sec" id="how" aria-labelledby="h-how">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <h2 id="h-how">Printed before you wake up.</h2>
+        <p>At 6:59 the press starts on its own. By the time the kettle boils, the paper is waiting.</p>
+      </div>
+      <ol class="steps">
+        <li class="step reveal">
+          <span class="step-num">01</span>
+          <h3>Gather</h3>
+          <p>Pulls the day's sources together. Mail is opened read-only.</p>
+          <ul class="sources" aria-label="Sources">
+            <li>mail</li><li>calendar</li><li>tasks</li><li>weather</li><li>news</li>
+          </ul>
+        </li>
+        <li class="step local reveal" style="--d:.06s">
+          <span class="step-num">02</span>
+          <span class="tag">On your laptop</span>
+          <h3>Write</h3>
+          <p>Gemma 4, running through Ollama, writes the edition as strict JSON. It never invents facts.</p>
+        </li>
+        <li class="step reveal" style="--d:.12s">
+          <span class="step-num">03</span>
+          <h3>Print &amp; speak</h3>
+          <p>A one-page edition to read, and a three-minute briefing to hear.</p>
+        </li>
+        <li class="step reveal" style="--d:.18s">
+          <span class="step-num">04</span>
+          <h3>Deliver</h3>
+          <p>Wherever you'll see it first.</p>
+          <ul class="sources" aria-label="Delivery channels">
+            <li>inbox</li><li>Telegram</li><li>Slack</li><li>Discord</li><li>ntfy</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+  </section>
 
-          <figure>
-            <ol class="flow" aria-label="How an edition is made">
-              <li><span class="step">Gather</span><span><span class="stamp">06:59</span>Mail, calendars, tasks, weather and news.</span></li>
-              <li class="local"><span class="step">Write</span><span>Gemma 4, on your laptop via Ollama, writes the edition as strict JSON. <small>No invented facts.</small></span></li>
-              <li class="split">
-                <div><span class="step">Print</span>A one-page newspaper.</div>
-                <div><span class="step">Read aloud</span>A briefing of about three minutes.</div>
-              </li>
-              <li><span class="step">Deliver</span><span>Your inbox, your phone, or a folder.</span></li>
-            </ol>
-          </figure>
-
-          <div class="cols">
-            <p class="drop">At 06:59 the press wakes up and gathers the day's sources: your mail over IMAP, opened read-only so nothing gets marked as read; your calendars from their iCal links; your tasks; the local weather; and the headlines you follow.</p>
-            <p>All of it goes to Gemma 4, running on your laptop through Ollama. The model writes the edition as strict JSON that has to match a schema, and it is told never to invent a fact.</p>
-            <blockquote class="pull">If it isn't in your sources, it isn't in your paper.</blockquote>
-            <p>That JSON is set as a one-page newspaper and rewritten as a short script, read aloud by the voice you pick. Then the edition goes wherever you'll see it first: your inbox, your phone, or a folder on disk.</p>
+  <!-- Features -->
+  <section class="sec" id="features" aria-labelledby="h-feat">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <h2 id="h-feat">Built to be trusted with your inbox.</h2>
+        <p>It reads everything and touches nothing. It writes only what your sources say.</p>
+      </div>
+      <div class="bento">
+        <article class="tile t-a reveal">
+          <div class="viz inbox" aria-hidden="true">
+            <div class="mail"><span class="dot"></span><b>Priya Shah</b><span class="subj">Re: Rebrand v3, dark logo before 4pm?</span><span class="state">still unread</span></div>
+            <div class="mail"><span class="dot"></span><b>Mom</b><span class="subj">Sunday lunch?</span><span class="state">still unread</span></div>
+            <div class="mail"><span class="dot"></span><b>Bright Dental</b><span class="subj">Your check-up is on Thursday</span><span class="state">still unread</span></div>
+            <div class="mail"><span class="dot"></span><b>SkyHop Airlines</b><span class="subj">Check-in is open for your Lisbon flight</span><span class="state">still unread</span></div>
           </div>
-          <p class="footnote">About 25 integrations, each switched on by one environment variable. The full list is on page 3.</p>
+          <div class="copy">
+            <h3>Reads, never marks as read</h3>
+            <p>Mail is opened over IMAP in read-only mode. Nothing is marked as read, moved or deleted, so your inbox looks exactly as you left it.</p>
+          </div>
+        </article>
+
+        <article class="tile t-b reveal" style="--d:.06s">
+          <pre class="viz json" aria-hidden="true">{
+  <span class="k">"needs_reply"</span>: [{
+    <span class="k">"from"</span>: <span class="s">"Priya Shah"</span>,
+    <span class="k">"about"</span>: <span class="s">"Rebrand v3"</span>,
+    <span class="k">"why"</span>: <span class="s">"Board call at 4pm"</span>
+  }]
+}</pre>
+          <div class="copy">
+            <h3>Facts only</h3>
+            <p>The model fills a strict schema. If it isn't in your sources, it isn't in your paper, and every link is real.</p>
+          </div>
+        </article>
+
+        <article class="tile t-c reveal">
+          <div class="viz player" aria-hidden="true">
+            <div class="wave">
+              <i class="on" style="--h:30%"></i><i class="on" style="--h:55%"></i><i class="on" style="--h:80%"></i><i class="on" style="--h:45%"></i><i class="on" style="--h:65%"></i><i class="on" style="--h:95%"></i><i class="on" style="--h:60%"></i><i class="on" style="--h:35%"></i><i class="on" style="--h:70%"></i><i class="on" style="--h:50%"></i><i class="on" style="--h:85%"></i><i style="--h:40%"></i><i style="--h:60%"></i><i style="--h:90%"></i><i style="--h:55%"></i><i style="--h:30%"></i><i style="--h:65%"></i><i style="--h:75%"></i><i style="--h:45%"></i><i style="--h:25%"></i><i style="--h:55%"></i><i style="--h:80%"></i><i style="--h:50%"></i><i style="--h:35%"></i><i style="--h:60%"></i><i style="--h:40%"></i>
+            </div>
+            <div class="time"><span>1:12</span><span>3:04</span></div>
+          </div>
+          <div class="copy">
+            <h3>Listen while you brush</h3>
+            <p>About three minutes, read aloud: what's on today, who's waiting on you, and whether you need an umbrella.</p>
+          </div>
+        </article>
+
+        <article class="tile t-d reveal" style="--d:.06s">
+          <div class="viz status" aria-hidden="true">
+            <span class="ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h.01"/><path d="M8.5 16.43a5 5 0 0 1 7 0"/><path d="M5 12.86a10 10 0 0 1 5.17-2.69"/><path d="M19 12.86a10 10 0 0 0-2-1.52"/><path d="M2 8.82a15 15 0 0 1 4.18-2.64"/><path d="M22 8.82a15 15 0 0 0-11.29-3.76"/><path d="m2 2 20 20"/></svg>
+            </span>
+            <dl><dt>Wi-Fi</dt><dd>off</dd><dt>Writer</dt><dd>Gemma 4</dd><dt>Voice</dt><dd>macOS</dd></dl>
+          </div>
+          <div class="copy">
+            <h3>Runs offline</h3>
+            <p>Ollama writes the words and the built-in macOS voice reads them. Neither needs the internet.</p>
+          </div>
+        </article>
+
+        <article class="tile t-e reveal" style="--d:.12s">
+          <ul class="viz receipt" aria-hidden="true">
+            <li><span>Model</span><span>$0.00</span></li>
+            <li><span>Voice</span><span>$0.00</span></li>
+            <li><span>Servers</span><span>$0.00</span></li>
+            <li class="total"><span>This morning</span><span>$0.00</span></li>
+          </ul>
+          <div class="copy">
+            <h3>$0 per morning</h3>
+            <p>No API bill and no subscription. The model is a file on your disk.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Integrations -->
+  <section class="sec" id="integrations" aria-labelledby="h-int">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <h2 id="h-int">Works with what you already use.</h2>
+        <p>Each one switches on with one environment variable.</p>
+      </div>
+      <div class="groups reveal">
+        <div class="group">
+          <h3>Mail <small>IMAP, read-only</small></h3>
+          <ul class="chips"><li>Gmail</li><li>iCloud</li><li>Fastmail</li><li>Yahoo</li><li>Zoho</li><li>AOL</li><li>GMX</li><li class="more">any IMAP over SSL</li></ul>
         </div>
-      </article>
-
-      <!-- Page 3: integrations -->
-      <article class="page" id="p3" aria-labelledby="h-int">
-        <div class="sheet">
-          <div class="folio"><span>p. 3</span><span>Integrations</span><span class="mini">The Localhost Times</span></div>
-          <p class="kicker">Classifieds</p>
-          <h2 class="hed" id="h-int">Sources Wanted. Apply Within.</h2>
-          <p class="dek">Each integration turns on when you set its environment variable, and stays off when you don't.</p>
-
-          <div class="classifieds">
-            <section class="ad">
-              <h3>Mail <small>IMAP, read-only</small></h3>
-              <ul class="names"><li>Gmail</li><li>iCloud</li><li>Fastmail</li><li>Yahoo</li><li>Zoho</li><li>AOL</li><li>GMX</li><li>any IMAP server over SSL</li></ul>
-              <p class="note">Opened read-only. Nothing is marked as read.</p>
-            </section>
-            <section class="ad">
-              <h3>Calendar <small>any iCal link</small></h3>
-              <ul class="names"><li>Google Calendar</li><li>Outlook / Microsoft 365 (published ICS link)</li><li>Apple iCloud</li><li>Fastmail</li><li>any iCal link</li></ul>
-            </section>
-            <section class="ad">
-              <h3>Tasks</h3>
-              <ul class="names"><li>Todoist</li><li>GitHub notifications</li></ul>
-            </section>
-            <section class="ad">
-              <h3>Weather</h3>
-              <ul class="names"><li>Open-Meteo</li></ul>
-              <p class="note">No API key, no account.</p>
-            </section>
-            <section class="ad">
-              <h3>News</h3>
-              <ul class="names"><li>Google News topics</li><li>any RSS or Atom feed</li><li>Hacker News</li></ul>
-            </section>
-            <section class="ad">
-              <h3>Brains <small>open models</small></h3>
-              <p>Ollama, with Gemma 4 by default. Or any OpenAI-compatible server:</p>
-              <ul class="names"><li>LM Studio</li><li>llama.cpp</li><li>vLLM</li><li>Jan</li></ul>
-            </section>
-            <section class="ad">
-              <h3>Voice</h3>
-              <ul class="names"><li>ElevenLabs</li><li>the macOS built-in voice (fully offline)</li><li>or none at all</li></ul>
-            </section>
-            <section class="ad">
-              <h3>Delivery</h3>
-              <ul class="names"><li>Email (SMTP)</li><li>Telegram</li><li>Slack</li><li>Discord</li><li>ntfy push</li><li>a local folder</li></ul>
-            </section>
-            <section class="ad wanted">
-              <h3>Wanted: Outlook.com</h3>
-              <p>Microsoft requires OAuth for Outlook.com mail, and the paper doesn't speak it yet. Contributions welcome.</p>
-              <p><a href="https://github.com/mohamedaminehamdi/the-localhost-times">Apply on GitHub</a></p>
-            </section>
-          </div>
+        <div class="group">
+          <h3>Calendars <small>iCal links</small></h3>
+          <ul class="chips"><li>Google</li><li>Outlook / Microsoft 365</li><li>Apple iCloud</li><li>Fastmail</li><li class="more">any iCal link</li></ul>
         </div>
-      </article>
-
-      <!-- Page 4: privacy editorial -->
-      <article class="page" id="p4" aria-labelledby="h-priv">
-        <div class="sheet">
-          <div class="folio"><span>p. 4</span><span>Opinion</span><span class="mini">The Localhost Times</span></div>
-          <p class="kicker">Editorial</p>
-          <h2 class="hed" id="h-priv">Your Inbox Is Not Training Data</h2>
-
-          <div class="justify">
-            <p class="drop">Most morning-briefing products work the same way. You connect your inbox, their servers read every message, and you hope the terms of service still say the same thing next year.</p>
-            <p>This paper is printed differently. The model lives on your laptop. It reads your mail there and writes there. The only thing that ever goes out is the finished script, and only if you want a cloud voice to read it.</p>
-          </div>
-
-          <table class="ledger">
-            <caption>Where your data goes</caption>
-            <tbody>
-              <tr><th scope="row">Emails and calendar</th><td>Read on your laptop by Gemma 4. Never uploaded.</td></tr>
-              <tr><th scope="row">The finished briefing script</th><td>Sent to ElevenLabs to become a voice. Or use the macOS voice and keep it offline.</td></tr>
-              <tr><th scope="row">The edition</th><td>Delivered through your own accounts: your mail server, your Telegram bot, your webhook.</td></tr>
-              <tr><th scope="row">The demo on this site</th><td>A made-up inbox for a made-up reader.</td></tr>
-            </tbody>
-          </table>
-
-          <h3 class="sub">Why open models</h3>
-          <div class="runin">
-            <p><strong>It runs offline.</strong> Planes, trains and bad hotel Wi-Fi are all fine.</p>
-            <p><strong>It costs $0 a morning.</strong> No API bill, no subscription.</p>
-            <p><strong>Nobody can change the terms on you.</strong> The model is a file on your disk. No one can reprice it, retire it or rewrite its policy overnight.</p>
-          </div>
-          <p class="signoff">The Editor</p>
+        <div class="group">
+          <h3>Tasks</h3>
+          <ul class="chips"><li>Todoist</li><li>GitHub notifications</li></ul>
         </div>
-      </article>
+        <div class="group">
+          <h3>Weather <small>no key needed</small></h3>
+          <ul class="chips"><li>Open-Meteo</li></ul>
+        </div>
+        <div class="group">
+          <h3>News</h3>
+          <ul class="chips"><li>Google News</li><li>RSS / Atom</li><li>Hacker News</li></ul>
+        </div>
+        <div class="group">
+          <h3>Models <small>open weights, local</small></h3>
+          <ul class="chips"><li>Ollama (Gemma 4)</li><li>LM Studio</li><li>llama.cpp</li><li>vLLM</li><li>Jan</li></ul>
+        </div>
+        <div class="group">
+          <h3>Voice</h3>
+          <ul class="chips"><li>macOS voice (offline)</li><li>ElevenLabs</li></ul>
+        </div>
+        <div class="group">
+          <h3>Delivery</h3>
+          <ul class="chips"><li>Email</li><li>Telegram</li><li>Slack</li><li>Discord</li><li>ntfy</li></ul>
+        </div>
+      </div>
+      <div class="int-foot reveal">
+        <p>Set <code>WEATHER_CITY=Lisbon</code> and the weather appears. Leave it out and it doesn't.</p>
+        <a class="chip wanted" href="https://github.com/mohamedaminehamdi/the-localhost-times"><b>Wanted:</b> <span>Outlook.com mail (needs OAuth). Contributions welcome.</span></a>
+      </div>
+    </div>
+  </section>
 
-      <!-- Page 5: subscribe -->
-      <article class="page" id="p5" aria-labelledby="h-sub">
-        <div class="sheet">
-          <div class="folio"><span>p. 5</span><span>Subscribe</span><span class="mini">The Localhost Times</span></div>
-          <p class="kicker">Circulation</p>
-          <h2 class="hed" id="h-sub">Subscriptions Are Free. Delivery Is Up to You.</h2>
-          <p class="dek">You'll need Python, uv and Ollama. Five commands later, you're holding today's paper.</p>
+  <!-- Privacy -->
+  <section class="sec" id="privacy" aria-labelledby="h-priv">
+    <div class="wrap privacy-grid">
+      <div class="reveal">
+        <div class="sec-head">
+          <h2 id="h-priv">Your inbox is not <span class="accent-word">training data.</span></h2>
+          <p>Most briefing apps read your mail on their servers. This one reads it on your laptop, writes there, and keeps it there.</p>
+        </div>
+        <ul class="whys">
+          <li>
+            <svg aria-hidden="true"><use href="#i-check"/></svg>
+            <div><strong>Runs offline.</strong> <span>Planes, trains and bad hotel Wi-Fi are all fine.</span></div>
+          </li>
+          <li>
+            <svg aria-hidden="true"><use href="#i-check"/></svg>
+            <div><strong>$0 per morning.</strong> <span>No usage meter ticking while you sleep.</span></div>
+          </li>
+          <li>
+            <svg aria-hidden="true"><use href="#i-check"/></svg>
+            <div><strong>Nobody can change the terms.</strong> <span>The model is a file on your disk. No one can reprice it, retire it or rewrite its policy overnight.</span></div>
+          </li>
+        </ul>
+      </div>
 
-          <div class="code">
-            <div class="code-head"><span>Quick start</span><button type="button" class="copy" data-copy="qs">Copy</button></div>
-<pre id="qs"><code>brew install ollama &amp;&amp; ollama pull gemma4:e4b
+      <div class="ledger-card reveal" style="--d:.08s">
+        <table class="ledger">
+          <caption>Where your data goes</caption>
+          <tbody>
+            <tr><th scope="row">Emails, calendar, tasks</th><td>Read on your laptop by the local model. <strong>Never uploaded.</strong></td></tr>
+            <tr><th scope="row">Briefing script</th><td>Stays local with the macOS voice. Goes to ElevenLabs <strong>only if you add a key.</strong></td></tr>
+            <tr><th scope="row">The edition</th><td>Delivered through your own accounts: your mail server, your bot, your webhook.</td></tr>
+            <tr><th scope="row">News &amp; weather</th><td>Fetched from public feeds by topic and city.</td></tr>
+            <tr><th scope="row">This demo</th><td>A made-up inbox for a made-up reader.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Get started -->
+  <section class="sec" id="start" aria-labelledby="h-start">
+    <div class="wrap">
+      <div class="start-grid">
+        <div class="sec-head reveal">
+          <h2 id="h-start">Your first edition in five commands.</h2>
+          <p>Clone it, point it at your inbox, and print today's paper. Then let cron deliver one every morning.</p>
+          <ul class="need">
+            <li><span>A laptop that can run <code>ollama</code></span></li>
+            <li><span>Python with <code>uv</code></span></li>
+            <li><span>An app password for your mail, if you want your inbox in it</span></li>
+          </ul>
+        </div>
+
+        <div class="reveal" style="--d:.08s">
+          <div class="term">
+            <div class="term-head">
+              <span><svg aria-hidden="true"><use href="#i-term"/></svg>Terminal</span>
+              <button type="button" class="copy-btn" data-copy="qs"><svg aria-hidden="true"><use href="#i-copy"/></svg><span>Copy</span></button>
+            </div>
+<pre id="qs" tabindex="0" aria-label="Quick start commands"><code>brew install ollama &amp;&amp; ollama pull gemma4:e4b
 git clone https://github.com/mohamedaminehamdi/the-localhost-times
 cd the-localhost-times &amp;&amp; cp .env.example .env
-uv run localhost-times --list   # see what's switched on
-uv run localhost-times          # print today's edition</code></pre>
+uv run localhost-times --list   <span class="c"># see what's switched on</span>
+uv run localhost-times          <span class="c"># print today's edition</span></code></pre>
           </div>
-
-          <div class="code">
-            <div class="code-head"><span>Delivered at 7 every morning (cron)</span><button type="button" class="copy" data-copy="cron">Copy</button></div>
-<pre id="cron"><code>0 7 * * * cd ~/the-localhost-times &amp;&amp; uv run localhost-times</code></pre>
+          <div class="term">
+            <div class="term-head">
+              <span><svg aria-hidden="true"><use href="#i-clock"/></svg>crontab: every morning at 7</span>
+              <button type="button" class="copy-btn" data-copy="cron"><svg aria-hidden="true"><use href="#i-copy"/></svg><span>Copy</span></button>
+            </div>
+<pre id="cron" tabindex="0" aria-label="Cron line"><code>0 7 * * * cd ~/the-localhost-times &amp;&amp; uv run localhost-times</code></pre>
           </div>
+        </div>
+      </div>
 
-          <h3 class="sub" id="h-form">Fill in your subscription form</h3>
-          <p class="privacy-note">This form writes your <code>.env</code> as you type. It runs entirely in your browser: nothing you type leaves this page.</p>
+      <div class="builder-wrap">
+        <div class="builder-head reveal">
+          <div>
+            <h3 id="h-form">Build your <code>.env</code></h3>
+            <p>Switch on what you want in your paper. The file writes itself as you type.</p>
+          </div>
+          <p class="local-note"><svg aria-hidden="true"><use href="#i-lock"/></svg>Runs entirely in your browser. Nothing you type leaves this page.</p>
+        </div>
 
+        <div class="builder-grid reveal">
           <form id="envform" class="builder" autocomplete="off" novalidate aria-labelledby="h-form">
             <div class="grp" data-section="Reader">
               <div class="fields always">
@@ -526,7 +745,7 @@ uv run localhost-times          # print today's edition</code></pre>
             </div>
 
             <fieldset class="grp" data-section="Mail">
-              <legend><label><input type="checkbox" data-toggle> Mail <small>IMAP, read-only</small></label></legend>
+              <legend><label>Mail <small>IMAP, read-only</small><input type="checkbox" data-toggle></label></legend>
               <div class="fields" hidden>
                 <label><span>Address <code>MAIL_USER</code></span>
                   <input name="MAIL_USER" type="email" placeholder="you@fastmail.com" autocomplete="off" spellcheck="false"></label>
@@ -538,7 +757,7 @@ uv run localhost-times          # print today's edition</code></pre>
             </fieldset>
 
             <fieldset class="grp" data-section="Calendar">
-              <legend><label><input type="checkbox" data-toggle> Calendar <small>any iCal link</small></label></legend>
+              <legend><label>Calendar <small>any iCal link</small><input type="checkbox" data-toggle></label></legend>
               <div class="fields" hidden>
                 <label><span>iCal links, comma-separated <code>ICAL_URLS</code></span>
                   <input name="ICAL_URLS" type="text" placeholder="https://calendar.google.com/…/basic.ics" autocomplete="off" spellcheck="false"></label>
@@ -546,7 +765,7 @@ uv run localhost-times          # print today's edition</code></pre>
             </fieldset>
 
             <fieldset class="grp" data-section="News">
-              <legend><label><input type="checkbox" data-toggle> News</label></legend>
+              <legend><label>News <small>topics, feeds, HN</small><input type="checkbox" data-toggle></label></legend>
               <div class="fields" hidden>
                 <label><span>Topics; “top” means front-page headlines <code>NEWS_TOPICS</code></span>
                   <input name="NEWS_TOPICS" type="text" value="top,technology" autocomplete="off" spellcheck="false" data-optional></label>
@@ -558,7 +777,7 @@ uv run localhost-times          # print today's edition</code></pre>
             </fieldset>
 
             <fieldset class="grp" data-section="Weather">
-              <legend><label><input type="checkbox" data-toggle> Weather <small>Open-Meteo, no key</small></label></legend>
+              <legend><label>Weather <small>Open-Meteo, no key</small><input type="checkbox" data-toggle></label></legend>
               <div class="fields" hidden>
                 <label><span>City <code>WEATHER_CITY</code></span>
                   <input name="WEATHER_CITY" type="text" placeholder="Lisbon" autocomplete="off" spellcheck="false"></label>
@@ -566,7 +785,7 @@ uv run localhost-times          # print today's edition</code></pre>
             </fieldset>
 
             <fieldset class="grp" data-section="Tasks">
-              <legend><label><input type="checkbox" data-toggle> Tasks</label></legend>
+              <legend><label>Tasks <small>Todoist, GitHub</small><input type="checkbox" data-toggle></label></legend>
               <div class="fields" hidden>
                 <label><span>Todoist API token <code>TODOIST_TOKEN</code></span>
                   <input name="TODOIST_TOKEN" type="password" autocomplete="off" data-optional></label>
@@ -576,7 +795,7 @@ uv run localhost-times          # print today's edition</code></pre>
             </fieldset>
 
             <fieldset class="grp" data-section="Model">
-              <legend><label><input type="checkbox" data-toggle> Model <small>Ollama by default</small></label></legend>
+              <legend><label>Model <small>Ollama by default</small><input type="checkbox" data-toggle></label></legend>
               <div class="fields" hidden>
                 <label><span>Model <code>MODEL</code></span>
                   <input name="MODEL" type="text" value="gemma4:e4b" autocomplete="off" spellcheck="false" data-optional></label>
@@ -588,12 +807,12 @@ uv run localhost-times          # print today's edition</code></pre>
             </fieldset>
 
             <fieldset class="grp" data-section="Voice">
-              <legend><label><input type="checkbox" data-toggle> Voice</label></legend>
+              <legend><label>Voice <small>who reads it aloud</small><input type="checkbox" data-toggle></label></legend>
               <div class="fields" hidden>
                 <label><span>Who reads it <code>VOICE</code></span>
                   <select name="VOICE">
-                    <option value="elevenlabs">elevenlabs</option>
                     <option value="say">say (macOS voice, offline)</option>
+                    <option value="elevenlabs">elevenlabs</option>
                     <option value="none">none</option>
                   </select></label>
                 <label data-voice="elevenlabs"><span>ElevenLabs API key <code>ELEVENLABS_API_KEY</code></span>
@@ -604,7 +823,7 @@ uv run localhost-times          # print today's edition</code></pre>
             </fieldset>
 
             <fieldset class="grp" data-section="Delivery">
-              <legend><label><input type="checkbox" data-toggle> Delivery</label></legend>
+              <legend><label>Delivery <small>email, chat, push</small><input type="checkbox" data-toggle></label></legend>
               <div class="fields" hidden>
                 <label><span>Email to, optional <code>SEND_TO</code></span>
                   <input name="SEND_TO" type="email" placeholder="defaults to MAIL_USER" autocomplete="off" spellcheck="false" data-optional></label>
@@ -622,63 +841,57 @@ uv run localhost-times          # print today's edition</code></pre>
             </fieldset>
           </form>
 
-          <div class="code env-out">
-            <div class="code-head"><span>Your .env</span><button type="button" class="copy" data-copy="envout">Copy</button></div>
-            <pre id="envout" aria-label="Generated .env file"></pre>
-          </div>
-          <p class="note">Save it as <code>.env</code> in the project folder, then run <code>uv run localhost-times --list</code> to see what's switched on.</p>
-        </div>
-      </article>
-
-      <!-- Page 6: back cover -->
-      <article class="page back" id="p6" data-density="hard" aria-labelledby="h-colo">
-        <div class="sheet">
-          <div class="inner">
-            <p class="masthead" aria-hidden="true">The Localhost Times</p>
-            <hr class="rule">
-            <h2 class="hed" id="h-colo">Colophon</h2>
-            <p>Printed on localhost. Built for a friend for the DEV Hacktoberfest 2026 Weekend Challenge. MIT licensed.</p>
-            <p class="note">Set in UnifrakturMaguntia, Libre Caslon Text and Oswald. Pages turned by StPageFlip.</p>
-            <section class="box" aria-labelledby="h-corr">
-              <h3 id="h-corr">Corrections</h3>
-              <p>Spotted an error, or want your mail provider in the classifieds? Open an issue or a pull request on GitHub.</p>
-            </section>
-            <div class="cta">
-              <a class="btn primary" href="https://github.com/mohamedaminehamdi/the-localhost-times">Source on GitHub</a>
-              <a class="btn" href="demo/">Read the demo edition</a>
+          <div class="preview">
+            <div class="term">
+              <div class="term-head">
+                <span><svg aria-hidden="true"><use href="#i-term"/></svg>.env</span>
+                <button type="button" class="copy-btn" data-copy="envout"><svg aria-hidden="true"><use href="#i-copy"/></svg><span>Copy</span></button>
+              </div>
+              <pre id="envout" aria-label="Generated .env file" tabindex="0"></pre>
             </div>
-            <p class="thirty" aria-hidden="true">— 30 —</p>
+            <p class="preview-note">Save it as <code>.env</code> in the project folder, then run <code>uv run localhost-times --list</code> to see what's switched on.</p>
           </div>
         </div>
-      </article>
-
+      </div>
     </div>
-
-    <nav class="controls" aria-label="Turn pages">
-      <button type="button" id="prev">‹ Previous</button>
-      <span id="indicator" aria-live="polite">Page 1 of 6</span>
-      <button type="button" id="next">Next ›</button>
-    </nav>
-    <p class="hint">Drag a page corner, swipe, or use the arrow keys.</p>
-  </div>
-  <p id="status" class="sr-only" role="status" aria-live="polite"></p>
+  </section>
 </main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div>
+      <a class="wordmark" href="#top"><svg aria-hidden="true"><use href="#i-mark"/></svg>The Localhost Times</a>
+      <p class="tagline">All the news that's fit to print. Printed on your machine.</p>
+      <p>Built for a friend · DEV Hacktoberfest 2026 · MIT licensed</p>
+    </div>
+    <nav aria-label="Footer">
+      <ul>
+        <li><a class="btn btn-ghost btn-sm" href="demo/">Read the demo edition</a></li>
+        <li><a class="btn btn-ghost btn-sm" href="https://github.com/mohamedaminehamdi/the-localhost-times"><svg aria-hidden="true"><use href="#i-gh"/></svg>Source on GitHub</a></li>
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+<p id="status" class="sr-only" role="status" aria-live="polite"></p>
 
 <script>
 (function () {
   'use strict';
-  var root = document.documentElement;
-  var book = document.getElementById('book');
-  var pages = Array.prototype.slice.call(book.querySelectorAll('.page'));
   var statusEl = document.getElementById('status');
-  var pf = null;
 
-  /* ---------- Dateline ---------- */
-  var now = new Date();
-  document.querySelectorAll('[data-today]').forEach(function (el) {
-    el.textContent = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-    el.setAttribute('datetime', now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0'));
-  });
+  /* ---------- Reveal on scroll ---------- */
+  var revealed = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    revealed.forEach(function (el) { io.observe(el); });
+  } else {
+    revealed.forEach(function (el) { el.classList.add('in'); });
+  }
 
   /* ---------- Copy buttons ---------- */
   function legacyCopy(text) {
@@ -702,17 +915,19 @@ uv run localhost-times          # print today's edition</code></pre>
   document.addEventListener('click', function (e) {
     var btn = e.target.closest('[data-copy]');
     if (!btn) return;
+    var label = btn.querySelector('span');
     var src = document.getElementById(btn.getAttribute('data-copy'));
     copyText(src.textContent).then(function () {
-      btn.textContent = 'Copied';
+      label.textContent = 'Copied';
+      btn.setAttribute('data-state', 'done');
       statusEl.textContent = 'Copied to clipboard.';
     }, function () {
       window.getSelection().selectAllChildren(src);
-      btn.textContent = 'Selected';
+      label.textContent = 'Selected';
       statusEl.textContent = 'Could not copy automatically. The text is selected; press Control C or Command C.';
     }).then(function () {
       btn.focus();
-      setTimeout(function () { btn.textContent = 'Copy'; }, 2000);
+      setTimeout(function () { label.textContent = 'Copy'; btn.removeAttribute('data-state'); }, 2000);
     });
   });
 
@@ -748,122 +963,19 @@ uv run localhost-times          # print today's edition</code></pre>
       });
       lines.push('');
     });
-    out.textContent = lines.join('\n').replace(/\n+$/, '') + '\n';
+    // One span per line (textContent only, never innerHTML) so comments can be dimmed; copy reads textContent.
+    var text = lines.join('\n').replace(/\n+$/, '') + '\n';
+    out.replaceChildren.apply(out, text.slice(0, -1).split('\n').map(function (line) {
+      var s = document.createElement('span');
+      if (line.charAt(0) === '#') s.className = 'c';
+      s.textContent = line + '\n';
+      return s;
+    }));
   }
   form.addEventListener('input', renderEnv);
   form.addEventListener('change', renderEnv);
   form.addEventListener('submit', function (e) { e.preventDefault(); });
   renderEnv();
-
-  /* ---------- Flipbook ---------- */
-  function stacked() { root.classList.remove('flip', 'ready'); }
-
-  function initFlip() {
-    var prev = document.getElementById('prev');
-    var next = document.getElementById('next');
-    var indicator = document.getElementById('indicator');
-    var classes = pages.map(function (p) { return p.className; });
-    var narrow = matchMedia('(max-width: 799px)').matches;
-    var stageW = book.parentElement.clientWidth;
-    var start = Math.max(0, pages.findIndex(function (p) { return '#' + p.id === location.hash; }));
-
-    try {
-      pf = new St.PageFlip(book, {
-        // Phones get a page shaped like their screen; desktops get a broadsheet spread.
-        width: narrow ? Math.max(260, stageW) : 550,
-        height: narrow ? Math.max(440, Math.round(window.innerHeight - 130)) : 760,
-        size: 'stretch',
-        minWidth: Math.min(280, stageW),
-        maxWidth: narrow ? 900 : 700,
-        minHeight: 380,
-        maxHeight: 2000,
-        showCover: true,
-        usePortrait: true,
-        mobileScrollSupport: true,   // lets long pages scroll by touch; quick horizontal swipes still turn
-        disableFlipByClick: true,    // only corner clicks turn pages, so clicks on copy and forms stay put
-        clickEventForward: true,
-        maxShadowOpacity: 0.5,
-        flippingTime: 800,
-        startPage: start
-      });
-
-      var update = function () {
-        var n = pf.getPageCount();
-        var i = pf.getCurrentPageIndex();
-        var spread = pf.getOrientation() === 'landscape' && i > 0 && i < n - 1;
-        var left = spread ? (i % 2 ? i : i - 1) : i;
-        var last = spread ? Math.min(left + 1, n - 1) : i;
-        indicator.textContent = last > left
-          ? 'Pages ' + (left + 1) + '–' + (last + 1) + ' of ' + n
-          : 'Page ' + (left + 1) + ' of ' + n;
-        prev.setAttribute('aria-disabled', String(left <= 0));
-        next.setAttribute('aria-disabled', String(last >= n - 1));
-      };
-
-      pf.on('init', function () { root.classList.add('ready'); update(); });
-      pf.on('flip', update);
-      pf.on('changeOrientation', update);
-      pf.loadFromHTML(pages);
-      setTimeout(function () { root.classList.add('ready'); }, 1500);
-
-      prev.addEventListener('click', function () { pf.flipPrev(); });
-      next.addEventListener('click', function () { pf.flipNext(); });
-
-      document.addEventListener('keydown', function (e) {
-        if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
-        if (e.target.closest && e.target.closest('input, select, textarea, [contenteditable]')) return;
-        if (e.key === 'ArrowRight') { e.preventDefault(); pf.flipNext(); }
-        else if (e.key === 'ArrowLeft') { e.preventDefault(); pf.flipPrev(); }
-      });
-
-      // Index links turn to their page instead of jumping.
-      book.addEventListener('click', function (e) {
-        var a = e.target.closest('a[href^="#p"]');
-        if (!a) return;
-        var idx = pages.findIndex(function (p) { return '#' + p.id === a.getAttribute('href'); });
-        if (idx < 0) return;
-        e.preventDefault();
-        pf.flip(idx);
-      });
-
-      // Keep the library's drag handling away from links, buttons, form fields, code and scrollbars.
-      var interactive = 'a, button, input, select, textarea, label, pre, summary';
-      pages.forEach(function (p) {
-        ['mousedown', 'touchstart'].forEach(function (type) {
-          p.addEventListener(type, function (e) {
-            var t = e.target;
-            var onScrollbar = t.classList && t.classList.contains('sheet') && e.offsetX > t.clientWidth;
-            if (t.closest(interactive) || onScrollbar) e.stopPropagation();
-          }, { passive: true });
-        });
-      });
-    } catch (err) {
-      // Put the paper back together as plain, stacked pages.
-      if (window.console) console.error(err);
-      pf = null;
-      book.replaceChildren.apply(book, pages);
-      book.removeAttribute('style');
-      book.removeAttribute('class');
-      pages.forEach(function (p, i) { p.removeAttribute('style'); p.className = classes[i]; });
-      stacked();
-    }
-  }
-
-  if (root.classList.contains('flip')) {
-    var s = document.createElement('script');
-    s.src = 'https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js';
-    s.integrity = 'sha384-L4eWrYFdqQ+LoGA0MMuqLqzV13x7SKkQaqacy4MED8e815dS37tTKlO/6xBEUpZW';
-    s.crossOrigin = 'anonymous';
-    s.onload = function () {
-      if (window.St && St.PageFlip) initFlip(); else stacked();
-    };
-    s.onerror = stacked;
-    document.head.appendChild(s);
-    // Slow network: read the stacked paper rather than stare at an empty table.
-    setTimeout(function () {
-      if (!pf) { s.onload = null; stacked(); }
-    }, 6000);
-  }
 })();
 </script>
 </body>
