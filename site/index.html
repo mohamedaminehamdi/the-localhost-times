@@ -1,0 +1,868 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Localhost Times</title>
+<meta name="description" content="A private morning newspaper with exactly one reader. Gemma 4 runs on your laptop, reads your inbox, calendar, tasks and the news, and prints your day on one page, plus a three-minute audio briefing.">
+<meta property="og:title" content="The Localhost Times">
+<meta property="og:description" content="All the news that's fit to print. Printed on your machine.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#231f1b">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%237a1f1f'/%3E%3Ctext x='16' y='24' font-family='Georgia,serif' font-size='22' font-weight='700' text-anchor='middle' fill='%23f4efe6'%3ET%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Oswald:wght@500;600&family=UnifrakturMaguntia&display=swap">
+<script>
+  // Flipbook only when motion is welcome; everything else gets the stacked, scrolling paper.
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('flip');
+</script>
+<style>
+  :root {
+    --paper: #f4efe6;
+    --paper-shade: #e8e0d0;
+    --ink: #1a1a1a;
+    --ink-soft: #4f4840;
+    --hair: rgba(26, 26, 26, .28);
+    --accent: #7a1f1f;
+    --table: #231f1b;
+    --table-lift: #342e27;
+    --on-table: #efe7d8;
+    --on-table-soft: rgba(239, 231, 216, .7);
+    --mast: "UnifrakturMaguntia", "Old English Text MT", "Times New Roman", serif;
+    --serif: "Libre Caslon Text", Georgia, "Times New Roman", serif;
+    --cond: "Oswald", "Arial Narrow", "Roboto Condensed", sans-serif;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: var(--table);
+    background-image: radial-gradient(ellipse at 50% 35%, var(--table-lift), var(--table) 72%);
+    background-attachment: fixed;
+    color: var(--on-table);
+    font-family: var(--serif);
+    overflow-x: clip;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  main { padding: 24px 16px 32px; }
+  .stage { width: min(100%, 1400px); margin: 0 auto; }
+  html.flip .stage { width: min(100%, 1400px, max(300px, calc((100vh - 150px) * 1100 / 760))); }
+  html.flip .stage { width: min(100%, 1400px, max(300px, calc((100svh - 150px) * 1100 / 760))); }
+  @media (max-width: 799px) { main { padding-top: 16px; } html.flip .stage { width: 100%; } }
+  html.flip:not(.ready) #book { visibility: hidden; }
+
+  /* ---------- Paper ---------- */
+  .page {
+    container-type: inline-size;
+    color: var(--ink);
+    background-color: var(--paper);
+    background-image:
+      radial-gradient(circle, rgba(26, 26, 26, .045) 0 .6px, transparent 1.1px),
+      radial-gradient(circle, rgba(122, 31, 31, .03) 0 .8px, transparent 1.4px),
+      radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, .45), transparent 65%),
+      linear-gradient(180deg, rgba(120, 95, 60, .03), rgba(120, 95, 60, .08));
+    background-size: 3px 3px, 7px 7px, 100% 100%, 100% 100%;
+    /* stacked (default / fallback) layout */
+    max-width: 760px;
+    margin: 0 auto 28px;
+    box-shadow: 0 1px 0 var(--paper-shade), 0 18px 40px rgba(0, 0, 0, .45);
+  }
+  .sheet {
+    padding: clamp(18px, 5.2cqi, 34px);
+    font-size: clamp(.875rem, 2.75cqi, 1rem);
+    line-height: 1.5;
+  }
+
+  /* flipbook layout: these selectors only match once StPageFlip has taken over */
+  .stf__parent { margin: 0 auto; }
+  .stf__parent .page { margin: 0; max-width: none; box-shadow: 0 10px 28px rgba(0, 0, 0, .35); }
+  .stf__parent .sheet {
+    height: 100%;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--hair) transparent;
+  }
+  .stf__parent .page.--left .sheet { box-shadow: inset -22px 0 26px -22px rgba(0, 0, 0, .4); }
+  .stf__parent .page.--right .sheet { box-shadow: inset 22px 0 26px -22px rgba(0, 0, 0, .3); }
+
+  /* ---------- Type ---------- */
+  :where(.sheet) p { margin: 0 0 .7em; }
+  .sheet figure { margin: 0; }
+  .box p:last-child { margin-bottom: 0; }
+  .folio {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 12px;
+    font-family: var(--cond); font-weight: 500; font-size: .74rem; letter-spacing: .06em;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--ink); padding-bottom: 5px; margin-bottom: 14px;
+  }
+  .folio .mini { font-family: var(--mast); font-weight: 400; font-size: 1.1rem; letter-spacing: 0; color: var(--ink); }
+  .kicker {
+    font-variant-caps: all-small-caps; letter-spacing: .07em;
+    color: var(--accent); font-size: 1.02em; margin: 0 0 .15rem;
+  }
+  .hed {
+    font-weight: 700; font-size: clamp(1.45rem, 6.4cqi, 2.45rem);
+    line-height: 1.06; letter-spacing: -.01em; margin: 0 0 .45rem; text-wrap: balance;
+  }
+  .dek { font-style: italic; color: var(--ink-soft); margin: 0 0 .9rem; font-size: 1.04em; }
+  h3.sub { font-size: 1.12em; line-height: 1.2; margin: 0 0 .35rem; }
+  .cols { columns: 2; column-gap: 1.4rem; column-rule: 1px solid var(--hair); }
+  .cols p, .justify p { hyphens: auto; -webkit-hyphens: auto; }
+  .drop::first-letter {
+    float: left; font-weight: 700; font-size: 3.55em; line-height: .8;
+    padding: .07em .08em 0 0; color: var(--accent);
+  }
+  .pull {
+    break-inside: avoid; margin: .3rem 0 .9rem; padding: .55rem .2rem;
+    border-top: 3px double var(--ink); border-bottom: 3px double var(--ink);
+    font-style: italic; font-size: 1.22em; line-height: 1.25; text-align: center; color: var(--accent);
+  }
+  .note { font-size: .86em; color: var(--ink-soft); }
+  code { font-family: var(--mono); font-size: .86em; }
+
+  /* ---------- Front page ---------- */
+  .ears {
+    display: flex; justify-content: space-between; gap: 12px;
+    font-family: var(--cond); font-weight: 500; font-size: .7rem; letter-spacing: .05em; color: var(--ink-soft);
+  }
+  .ears span { max-width: 46%; }
+  .ears span:last-child { text-align: right; }
+  .masthead {
+    font-family: var(--mast); font-weight: 400; text-align: center;
+    font-size: clamp(1.9rem, 9.6cqi, 4.4rem); line-height: 1.02;
+    margin: .25rem 0 .1rem; text-wrap: balance;
+  }
+  .tagline { text-align: center; font-style: italic; margin: 0 0 .55rem; font-size: .95em; }
+  .dateline {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: .2rem 1rem;
+    border-top: 4px double var(--ink); border-bottom: 1px solid var(--ink);
+    padding: .32rem 0; font-family: var(--cond); font-weight: 500; font-size: .74rem; letter-spacing: .06em;
+  }
+  .front { display: grid; grid-template-columns: 1fr 32%; gap: 0 1.2rem; margin-top: 1rem; }
+  .front .side { border-left: 1px solid var(--hair); padding-left: 1.2rem; }
+  .lead .hed { font-size: clamp(1.6rem, 6.8cqi, 2.6rem); }
+  .second { border-top: 1px solid var(--ink); padding-top: .7rem; margin-top: .4rem; }
+  .cta { display: flex; flex-wrap: wrap; gap: .55rem; margin: .9rem 0 .4rem; }
+  .btn {
+    display: inline-flex; align-items: center; min-height: 44px; padding: .5rem .95rem;
+    font-family: var(--cond); font-weight: 500; font-size: .95rem; letter-spacing: .04em;
+    text-decoration: none; color: var(--ink); border: 1.5px solid var(--ink); background: transparent;
+  }
+  .btn:hover { background: var(--ink); color: var(--paper); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+  .btn.primary:hover { background: var(--ink); border-color: var(--ink); }
+  .box { border: 1px solid var(--ink); padding: .6rem .75rem .7rem; margin-bottom: 1rem; }
+  .box h3 {
+    font-family: var(--cond); font-weight: 600; font-size: .82rem; letter-spacing: .1em; text-transform: uppercase;
+    margin: 0 0 .35rem; padding-bottom: .3rem; border-bottom: 1px solid var(--ink);
+  }
+  .index { list-style: none; margin: 0; padding: 0; }
+  .index a {
+    display: flex; justify-content: space-between; gap: .5rem; padding: .32rem 0;
+    border-bottom: 1px dotted var(--hair); text-decoration: none;
+  }
+  .index li:last-child a { border-bottom: 0; }
+  .index a:hover span:first-child { text-decoration: underline; }
+  .index a span:last-child { font-family: var(--cond); font-weight: 500; color: var(--accent); white-space: nowrap; }
+  .weather p { margin: 0 0 .4em; font-size: .92em; }
+  .weather .big { font-family: var(--cond); font-weight: 600; font-size: 1.35em; letter-spacing: .02em; margin-bottom: .1em; }
+
+  /* ---------- How it's made ---------- */
+  .flow { list-style: none; margin: .3rem 0 1.1rem; padding: 0; display: grid; gap: 1.15rem; }
+  .flow > li {
+    position: relative; display: grid; grid-template-columns: 5.4em 1fr; gap: .1rem .6rem; align-items: baseline;
+    border: 1px solid var(--ink); padding: .45rem .65rem; background: rgba(255, 255, 255, .28);
+  }
+  .flow > li:not(:first-child)::before {
+    content: ""; position: absolute; left: 50%; top: calc(-1.15rem - 1px); height: 1.15rem; border-left: 1px solid var(--ink);
+  }
+  .flow > li:not(:first-child)::after {
+    content: ""; position: absolute; left: calc(50% - 4px); top: -6px;
+    border-left: 4.5px solid transparent; border-right: 4.5px solid transparent; border-top: 6px solid var(--ink);
+  }
+  .flow .step { font-family: var(--cond); font-weight: 600; font-size: .95em; letter-spacing: .05em; }
+  .flow .local { border: 2px solid var(--accent); }
+  .flow .local .step { color: var(--accent); }
+  .flow .split { grid-template-columns: 1fr 1fr; gap: .6rem; border: 0; padding: 0; background: none; }
+  .flow .split > div { border: 1px solid var(--ink); padding: .45rem .65rem; background: rgba(255, 255, 255, .28); }
+  .flow .split .step { display: block; }
+  .flow small { font-size: .9em; color: var(--ink-soft); }
+  .stamp {
+    display: inline-block; font-family: var(--cond); font-weight: 600; letter-spacing: .05em;
+    color: var(--accent); border: 1px solid var(--accent); padding: 0 .3em; margin-right: .35em; font-size: .85em;
+  }
+  .footnote { border-top: 1px solid var(--ink); padding-top: .5rem; margin-top: .3rem; font-size: .9em; font-style: italic; }
+
+  /* ---------- Classifieds ---------- */
+  .classifieds { columns: 2 13rem; column-gap: 1rem; column-rule: 1px solid var(--hair); margin-top: .2rem; }
+  .ad { break-inside: avoid; border: 1px solid var(--ink); padding: .45rem .6rem .5rem; margin: 0 0 .8rem; font-size: .92em; line-height: 1.38; }
+  .ad h3 {
+    font-family: var(--cond); font-weight: 600; font-size: .92rem; letter-spacing: .08em; text-transform: uppercase;
+    margin: 0 0 .2rem; display: flex; justify-content: space-between; gap: .5rem; align-items: baseline;
+  }
+  .ad h3 small { font-family: var(--serif); font-weight: 400; font-style: italic; letter-spacing: 0; text-transform: none; font-size: .82rem; color: var(--ink-soft); }
+  .ad p { margin: .2rem 0 0; }
+  .names { list-style: none; margin: 0; padding: 0; }
+  .names li { display: inline; }
+  .names li:not(:last-child)::after { content: ", "; }
+  .ad.wanted { border: 2px solid var(--accent); text-align: center; }
+  .ad.wanted h3 { display: block; color: var(--accent); }
+
+  /* ---------- Editorial ---------- */
+  .ledger { width: 100%; border-collapse: collapse; font-size: .9em; line-height: 1.38; margin: .4rem 0 1rem; }
+  .ledger caption {
+    text-align: left; font-family: var(--cond); font-weight: 600; font-size: .82rem; letter-spacing: .1em; text-transform: uppercase;
+    padding-bottom: .3rem; border-bottom: 3px double var(--ink);
+  }
+  .ledger th, .ledger td { text-align: left; vertical-align: top; padding: .42rem .6rem .42rem 0; border-bottom: 1px solid var(--hair); }
+  .ledger th { width: 36%; font-weight: 700; }
+  .ledger td:last-child, .ledger th:last-child { padding-right: 0; }
+  .runin strong { font-variant-caps: all-small-caps; letter-spacing: .05em; font-size: 1.08em; color: var(--accent); }
+  .signoff { text-align: right; font-style: italic; }
+
+  /* ---------- Subscribe ---------- */
+  .code { margin: .3rem 0 .9rem; }
+  .code-head {
+    display: flex; justify-content: space-between; align-items: center; gap: .5rem;
+    font-family: var(--cond); font-weight: 500; font-size: .78rem; letter-spacing: .06em; color: var(--ink-soft);
+    border-bottom: 1px solid var(--ink); padding-bottom: .2rem;
+  }
+  .copy {
+    font-family: var(--cond); font-weight: 500; font-size: .78rem; letter-spacing: .06em;
+    background: var(--paper); color: var(--ink); border: 1px solid var(--ink); padding: .25rem .6rem; min-height: 32px; cursor: pointer;
+  }
+  .copy:hover { background: var(--ink); color: var(--paper); }
+  pre {
+    margin: 0; padding: .6rem .7rem; background: rgba(122, 95, 60, .1); border-left: 3px solid var(--accent);
+    font-family: var(--mono); font-size: .78em; line-height: 1.55; color: var(--ink);
+    white-space: pre-wrap; overflow-wrap: anywhere;
+  }
+  .builder { margin-top: .4rem; }
+  .builder .grp { border: 0; border-top: 1px solid var(--hair); margin: 0; padding: .35rem 0; min-width: 0; }
+  .builder legend { padding: 0; float: left; width: 100%; }
+  .builder legend + * { clear: both; }
+  .builder legend label { display: flex; align-items: center; gap: .55rem; min-height: 36px; cursor: pointer; font-weight: 700; }
+  .builder legend small { font-weight: 400; font-style: italic; color: var(--ink-soft); }
+  .builder input[type="checkbox"] { accent-color: var(--accent); width: 1.1rem; height: 1.1rem; margin: 0; flex: none; }
+  .fields { display: grid; gap: .55rem; padding: .25rem 0 .45rem 1.65rem; }
+  .fields.always { padding-left: 0; }
+  .fields label { display: grid; gap: .2rem; font-size: .88em; min-width: 0; }
+  .fields label code { color: var(--accent); }
+  .fields input, .fields select {
+    width: 100%; min-width: 0; font-family: var(--mono); font-size: 15px; color: var(--ink);
+    background: #fbf8f2; border: 1px solid var(--ink-soft); border-radius: 0; padding: .45rem .5rem; min-height: 40px;
+  }
+  .fields input::placeholder { color: #857b70; }
+  .fields input:focus-visible, .fields select:focus-visible { outline: 2px solid var(--accent); outline-offset: 0; border-color: var(--accent); }
+  @media (pointer: coarse) { .fields input, .fields select { font-size: 16px; } }
+  .env-out { margin-top: .9rem; }
+  .env-out pre { min-height: 5em; }
+  .privacy-note { font-size: .88em; font-style: italic; border-left: 3px solid var(--accent); padding-left: .6rem; margin: .2rem 0 .6rem; }
+
+  /* ---------- Back cover ---------- */
+  .back .sheet { display: flex; flex-direction: column; text-align: center; }
+  .back .inner { margin: auto 0; }
+  .back .masthead { font-size: clamp(1.7rem, 8.5cqi, 3.4rem); }
+  .back .rule { border: 0; border-top: 4px double var(--ink); margin: .6rem auto 1rem; width: 60%; }
+  .back .box { text-align: left; max-width: 30em; margin: 1.1rem auto; }
+  .back .cta { justify-content: center; }
+  .thirty { font-family: var(--cond); font-weight: 600; letter-spacing: .3em; margin-top: 1.2rem; }
+
+  /* ---------- Narrow pages (phones, small spreads) ---------- */
+  @container (max-width: 440px) {
+    .cols { columns: 1; }
+    .dateline { justify-content: center; column-gap: 1.2rem; }
+    .front { grid-template-columns: 1fr; }
+    .front .side { border-left: 0; padding-left: 0; border-top: 4px double var(--ink); padding-top: .8rem; margin-top: .6rem; }
+    .flow > li { grid-template-columns: 1fr; }
+    .flow .split { grid-template-columns: 1fr; }
+    .ledger th { width: 40%; }
+  }
+
+  /* ---------- Controls on the table ---------- */
+  .controls {
+    display: none; align-items: center; justify-content: center; gap: .9rem;
+    margin: 16px auto 0; font-family: var(--cond); color: var(--on-table);
+  }
+  html.ready .controls { display: flex; }
+  .controls button {
+    font: inherit; font-weight: 500; font-size: .95rem; letter-spacing: .05em;
+    background: transparent; color: var(--on-table); border: 1px solid rgba(239, 231, 216, .55);
+    min-height: 44px; padding: .5rem 1rem; cursor: pointer;
+  }
+  .controls button:hover:not([aria-disabled="true"]) { background: var(--on-table); color: var(--table); }
+  .controls button[aria-disabled="true"] { opacity: .35; cursor: default; }
+  .controls :focus-visible { outline-color: var(--on-table); }
+  #indicator { min-width: 9em; text-align: center; font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+  .hint { display: none; text-align: center; font-style: italic; font-size: .82rem; color: var(--on-table-soft); margin: 8px 0 0; }
+  html.ready .hint { display: block; }
+  @media (max-width: 420px) {
+    .controls { gap: .45rem; }
+    .controls button { padding: .5rem .7rem; }
+    #indicator { min-width: 7.5em; font-size: .9rem; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="stage">
+    <div id="book">
+
+      <!-- Page 1: front cover -->
+      <article class="page cover" id="p1" data-density="hard" aria-labelledby="mast">
+        <div class="sheet">
+          <div class="ears">
+            <span>Price: free. MIT licensed.</span>
+            <span>Self-hosted with Python, uv and Ollama.</span>
+          </div>
+          <h1 class="masthead" id="mast">The Localhost Times</h1>
+          <p class="tagline">All the news that's fit to print. Printed on your machine.</p>
+          <div class="dateline">
+            <span>Vol. 1 · No. 1</span>
+            <time data-today>Today's edition</time>
+            <span>Printed on localhost</span>
+          </div>
+
+          <div class="front">
+            <div class="lead">
+              <p class="kicker">A newspaper with one reader</p>
+              <h2 class="hed">Your Day, Printed on Your Machine</h2>
+              <div class="justify">
+                <p class="drop">Every morning, The Localhost Times reads your inbox, today's calendar, your tasks and the news, then hands you a one-page newspaper and a three-minute audio briefing to play while you brush your teeth.</p>
+                <p>It's written by Gemma 4, an open-weight model running on your own laptop through Ollama. Your inbox never leaves the house.</p>
+              </div>
+              <div class="cta">
+                <a class="btn primary" href="demo/">Read today's demo edition →</a>
+                <a class="btn" href="https://github.com/mohamedaminehamdi/the-localhost-times">View on GitHub</a>
+              </div>
+              <p class="note">The demo is written for Sam, a reader we made up, from an inbox we made up.</p>
+
+              <section class="second" aria-labelledby="friend">
+                <h3 class="sub" id="friend">A Friend Asked for It</h3>
+                <p>They wanted their whole day on one page: the emails that need an answer, the meetings, the to-dos, the weather and a few headlines. Nothing to scroll, nothing to sign up for. This is that page, printed fresh every morning. Built for the DEV Hacktoberfest 2026 “Build for a Friend” challenge.</p>
+              </section>
+            </div>
+
+            <aside class="side" aria-label="Index and weather">
+              <nav class="box" aria-labelledby="idx">
+                <h3 id="idx">Index</h3>
+                <ul class="index">
+                  <li><a href="#p2"><span>How it's made</span><span>p. 2</span></a></li>
+                  <li><a href="#p3"><span>Integrations</span><span>p. 3</span></a></li>
+                  <li><a href="#p4"><span>Privacy</span><span>p. 4</span></a></li>
+                  <li><a href="#p5"><span>Subscribe</span><span>p. 5</span></a></li>
+                  <li><a href="#p6"><span>Colophon</span><span>p. 6</span></a></li>
+                </ul>
+              </nav>
+              <section class="box weather" aria-labelledby="wx">
+                <h3 id="wx">Weather</h3>
+                <p class="big">Clear on localhost</p>
+                <p>Your inbox stays indoors all day. No uploads in the forecast.</p>
+                <p class="note">Real editions carry your real forecast, from Open-Meteo.</p>
+              </section>
+            </aside>
+          </div>
+        </div>
+      </article>
+
+      <!-- Page 2: how it's made -->
+      <article class="page" id="p2" aria-labelledby="h-made">
+        <div class="sheet">
+          <div class="folio"><span>p. 2</span><span>How it's made</span><span class="mini">The Localhost Times</span></div>
+          <p class="kicker">The printing press</p>
+          <h2 class="hed" id="h-made">At 06:59, the Paper Writes Itself</h2>
+          <p class="dek">Four steps, one laptop, no newsroom.</p>
+
+          <figure>
+            <ol class="flow" aria-label="How an edition is made">
+              <li><span class="step">Gather</span><span><span class="stamp">06:59</span>Mail, calendars, tasks, weather and news.</span></li>
+              <li class="local"><span class="step">Write</span><span>Gemma 4, on your laptop via Ollama, writes the edition as strict JSON. <small>No invented facts.</small></span></li>
+              <li class="split">
+                <div><span class="step">Print</span>A one-page newspaper.</div>
+                <div><span class="step">Read aloud</span>A briefing of about three minutes.</div>
+              </li>
+              <li><span class="step">Deliver</span><span>Your inbox, your phone, or a folder.</span></li>
+            </ol>
+          </figure>
+
+          <div class="cols">
+            <p class="drop">At 06:59 the press wakes up and gathers the day's sources: your mail over IMAP, opened read-only so nothing gets marked as read; your calendars from their iCal links; your tasks; the local weather; and the headlines you follow.</p>
+            <p>All of it goes to Gemma 4, running on your laptop through Ollama. The model writes the edition as strict JSON that has to match a schema, and it is told never to invent a fact.</p>
+            <blockquote class="pull">If it isn't in your sources, it isn't in your paper.</blockquote>
+            <p>That JSON is set as a one-page newspaper and rewritten as a short script, read aloud by the voice you pick. Then the edition goes wherever you'll see it first: your inbox, your phone, or a folder on disk.</p>
+          </div>
+          <p class="footnote">About 25 integrations, each switched on by one environment variable. The full list is on page 3.</p>
+        </div>
+      </article>
+
+      <!-- Page 3: integrations -->
+      <article class="page" id="p3" aria-labelledby="h-int">
+        <div class="sheet">
+          <div class="folio"><span>p. 3</span><span>Integrations</span><span class="mini">The Localhost Times</span></div>
+          <p class="kicker">Classifieds</p>
+          <h2 class="hed" id="h-int">Sources Wanted. Apply Within.</h2>
+          <p class="dek">Each integration turns on when you set its environment variable, and stays off when you don't.</p>
+
+          <div class="classifieds">
+            <section class="ad">
+              <h3>Mail <small>IMAP, read-only</small></h3>
+              <ul class="names"><li>Gmail</li><li>iCloud</li><li>Fastmail</li><li>Yahoo</li><li>Zoho</li><li>AOL</li><li>GMX</li><li>any IMAP server over SSL</li></ul>
+              <p class="note">Opened read-only. Nothing is marked as read.</p>
+            </section>
+            <section class="ad">
+              <h3>Calendar <small>any iCal link</small></h3>
+              <ul class="names"><li>Google Calendar</li><li>Outlook / Microsoft 365 (published ICS link)</li><li>Apple iCloud</li><li>Fastmail</li><li>any iCal link</li></ul>
+            </section>
+            <section class="ad">
+              <h3>Tasks</h3>
+              <ul class="names"><li>Todoist</li><li>GitHub notifications</li></ul>
+            </section>
+            <section class="ad">
+              <h3>Weather</h3>
+              <ul class="names"><li>Open-Meteo</li></ul>
+              <p class="note">No API key, no account.</p>
+            </section>
+            <section class="ad">
+              <h3>News</h3>
+              <ul class="names"><li>Google News topics</li><li>any RSS or Atom feed</li><li>Hacker News</li></ul>
+            </section>
+            <section class="ad">
+              <h3>Brains <small>open models</small></h3>
+              <p>Ollama, with Gemma 4 by default. Or any OpenAI-compatible server:</p>
+              <ul class="names"><li>LM Studio</li><li>llama.cpp</li><li>vLLM</li><li>Jan</li></ul>
+            </section>
+            <section class="ad">
+              <h3>Voice</h3>
+              <ul class="names"><li>ElevenLabs</li><li>the macOS built-in voice (fully offline)</li><li>or none at all</li></ul>
+            </section>
+            <section class="ad">
+              <h3>Delivery</h3>
+              <ul class="names"><li>Email (SMTP)</li><li>Telegram</li><li>Slack</li><li>Discord</li><li>ntfy push</li><li>a local folder</li></ul>
+            </section>
+            <section class="ad wanted">
+              <h3>Wanted: Outlook.com</h3>
+              <p>Microsoft requires OAuth for Outlook.com mail, and the paper doesn't speak it yet. Contributions welcome.</p>
+              <p><a href="https://github.com/mohamedaminehamdi/the-localhost-times">Apply on GitHub</a></p>
+            </section>
+          </div>
+        </div>
+      </article>
+
+      <!-- Page 4: privacy editorial -->
+      <article class="page" id="p4" aria-labelledby="h-priv">
+        <div class="sheet">
+          <div class="folio"><span>p. 4</span><span>Opinion</span><span class="mini">The Localhost Times</span></div>
+          <p class="kicker">Editorial</p>
+          <h2 class="hed" id="h-priv">Your Inbox Is Not Training Data</h2>
+
+          <div class="justify">
+            <p class="drop">Most morning-briefing products work the same way. You connect your inbox, their servers read every message, and you hope the terms of service still say the same thing next year.</p>
+            <p>This paper is printed differently. The model lives on your laptop. It reads your mail there and writes there. The only thing that ever goes out is the finished script, and only if you want a cloud voice to read it.</p>
+          </div>
+
+          <table class="ledger">
+            <caption>Where your data goes</caption>
+            <tbody>
+              <tr><th scope="row">Emails and calendar</th><td>Read on your laptop by Gemma 4. Never uploaded.</td></tr>
+              <tr><th scope="row">The finished briefing script</th><td>Sent to ElevenLabs to become a voice. Or use the macOS voice and keep it offline.</td></tr>
+              <tr><th scope="row">The edition</th><td>Delivered through your own accounts: your mail server, your Telegram bot, your webhook.</td></tr>
+              <tr><th scope="row">The demo on this site</th><td>A made-up inbox for a made-up reader.</td></tr>
+            </tbody>
+          </table>
+
+          <h3 class="sub">Why open models</h3>
+          <div class="runin">
+            <p><strong>It runs offline.</strong> Planes, trains and bad hotel Wi-Fi are all fine.</p>
+            <p><strong>It costs $0 a morning.</strong> No API bill, no subscription.</p>
+            <p><strong>Nobody can change the terms on you.</strong> The model is a file on your disk. No one can reprice it, retire it or rewrite its policy overnight.</p>
+          </div>
+          <p class="signoff">The Editor</p>
+        </div>
+      </article>
+
+      <!-- Page 5: subscribe -->
+      <article class="page" id="p5" aria-labelledby="h-sub">
+        <div class="sheet">
+          <div class="folio"><span>p. 5</span><span>Subscribe</span><span class="mini">The Localhost Times</span></div>
+          <p class="kicker">Circulation</p>
+          <h2 class="hed" id="h-sub">Subscriptions Are Free. Delivery Is Up to You.</h2>
+          <p class="dek">You'll need Python, uv and Ollama. Five commands later, you're holding today's paper.</p>
+
+          <div class="code">
+            <div class="code-head"><span>Quick start</span><button type="button" class="copy" data-copy="qs">Copy</button></div>
+<pre id="qs"><code>brew install ollama &amp;&amp; ollama pull gemma4:e4b
+git clone https://github.com/mohamedaminehamdi/the-localhost-times
+cd the-localhost-times &amp;&amp; cp .env.example .env
+uv run localhost-times --list   # see what's switched on
+uv run localhost-times          # print today's edition</code></pre>
+          </div>
+
+          <div class="code">
+            <div class="code-head"><span>Delivered at 7 every morning (cron)</span><button type="button" class="copy" data-copy="cron">Copy</button></div>
+<pre id="cron"><code>0 7 * * * cd ~/the-localhost-times &amp;&amp; uv run localhost-times</code></pre>
+          </div>
+
+          <h3 class="sub" id="h-form">Fill in your subscription form</h3>
+          <p class="privacy-note">This form writes your <code>.env</code> as you type. It runs entirely in your browser: nothing you type leaves this page.</p>
+
+          <form id="envform" class="builder" autocomplete="off" novalidate aria-labelledby="h-form">
+            <div class="grp" data-section="Reader">
+              <div class="fields always">
+                <label><span>Your name <code>READER_NAME</code></span>
+                  <input name="READER_NAME" type="text" placeholder="Sam" autocomplete="off" spellcheck="false" data-optional></label>
+              </div>
+            </div>
+
+            <fieldset class="grp" data-section="Mail">
+              <legend><label><input type="checkbox" data-toggle> Mail <small>IMAP, read-only</small></label></legend>
+              <div class="fields" hidden>
+                <label><span>Address <code>MAIL_USER</code></span>
+                  <input name="MAIL_USER" type="email" placeholder="you@fastmail.com" autocomplete="off" spellcheck="false"></label>
+                <label><span>App password <code>MAIL_PASSWORD</code></span>
+                  <input name="MAIL_PASSWORD" type="password" placeholder="an app password, not your login" autocomplete="off"></label>
+                <label><span>IMAP host, optional <code>MAIL_HOST</code></span>
+                  <input name="MAIL_HOST" type="text" placeholder="worked out from your address" autocomplete="off" spellcheck="false" data-optional></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="grp" data-section="Calendar">
+              <legend><label><input type="checkbox" data-toggle> Calendar <small>any iCal link</small></label></legend>
+              <div class="fields" hidden>
+                <label><span>iCal links, comma-separated <code>ICAL_URLS</code></span>
+                  <input name="ICAL_URLS" type="text" placeholder="https://calendar.google.com/…/basic.ics" autocomplete="off" spellcheck="false"></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="grp" data-section="News">
+              <legend><label><input type="checkbox" data-toggle> News</label></legend>
+              <div class="fields" hidden>
+                <label><span>Topics; “top” means front-page headlines <code>NEWS_TOPICS</code></span>
+                  <input name="NEWS_TOPICS" type="text" value="top,technology" autocomplete="off" spellcheck="false" data-optional></label>
+                <label><span>RSS or Atom feeds, optional <code>RSS_FEEDS</code></span>
+                  <input name="RSS_FEEDS" type="text" placeholder="https://example.com/feed.xml" autocomplete="off" spellcheck="false" data-optional></label>
+                <label><span>Hacker News stories, optional <code>HACKERNEWS</code></span>
+                  <input name="HACKERNEWS" type="number" min="0" max="30" inputmode="numeric" placeholder="5" autocomplete="off" data-optional></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="grp" data-section="Weather">
+              <legend><label><input type="checkbox" data-toggle> Weather <small>Open-Meteo, no key</small></label></legend>
+              <div class="fields" hidden>
+                <label><span>City <code>WEATHER_CITY</code></span>
+                  <input name="WEATHER_CITY" type="text" placeholder="Lisbon" autocomplete="off" spellcheck="false"></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="grp" data-section="Tasks">
+              <legend><label><input type="checkbox" data-toggle> Tasks</label></legend>
+              <div class="fields" hidden>
+                <label><span>Todoist API token <code>TODOIST_TOKEN</code></span>
+                  <input name="TODOIST_TOKEN" type="password" autocomplete="off" data-optional></label>
+                <label><span>GitHub token, for notifications <code>GITHUB_TOKEN</code></span>
+                  <input name="GITHUB_TOKEN" type="password" autocomplete="off" data-optional></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="grp" data-section="Model">
+              <legend><label><input type="checkbox" data-toggle> Model <small>Ollama by default</small></label></legend>
+              <div class="fields" hidden>
+                <label><span>Model <code>MODEL</code></span>
+                  <input name="MODEL" type="text" value="gemma4:e4b" autocomplete="off" spellcheck="false" data-optional></label>
+                <label><span>OpenAI-compatible server, optional <code>LLM_BASE_URL</code></span>
+                  <input name="LLM_BASE_URL" type="text" placeholder="http://localhost:1234/v1" autocomplete="off" spellcheck="false" data-optional></label>
+                <label><span>Server API key, optional <code>LLM_API_KEY</code></span>
+                  <input name="LLM_API_KEY" type="password" autocomplete="off" data-optional></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="grp" data-section="Voice">
+              <legend><label><input type="checkbox" data-toggle> Voice</label></legend>
+              <div class="fields" hidden>
+                <label><span>Who reads it <code>VOICE</code></span>
+                  <select name="VOICE">
+                    <option value="elevenlabs">elevenlabs</option>
+                    <option value="say">say (macOS voice, offline)</option>
+                    <option value="none">none</option>
+                  </select></label>
+                <label data-voice="elevenlabs"><span>ElevenLabs API key <code>ELEVENLABS_API_KEY</code></span>
+                  <input name="ELEVENLABS_API_KEY" type="password" autocomplete="off"></label>
+                <label data-voice="elevenlabs say"><span>Voice ID, optional <code>VOICE_ID</code></span>
+                  <input name="VOICE_ID" type="text" autocomplete="off" spellcheck="false" data-optional></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="grp" data-section="Delivery">
+              <legend><label><input type="checkbox" data-toggle> Delivery</label></legend>
+              <div class="fields" hidden>
+                <label><span>Email to, optional <code>SEND_TO</code></span>
+                  <input name="SEND_TO" type="email" placeholder="defaults to MAIL_USER" autocomplete="off" spellcheck="false" data-optional></label>
+                <label><span>Telegram bot token <code>TELEGRAM_BOT_TOKEN</code></span>
+                  <input name="TELEGRAM_BOT_TOKEN" type="password" autocomplete="off" data-optional></label>
+                <label><span>Telegram chat ID <code>TELEGRAM_CHAT_ID</code></span>
+                  <input name="TELEGRAM_CHAT_ID" type="text" autocomplete="off" spellcheck="false" data-optional></label>
+                <label><span>Slack webhook URL <code>SLACK_WEBHOOK_URL</code></span>
+                  <input name="SLACK_WEBHOOK_URL" type="password" autocomplete="off" data-optional></label>
+                <label><span>Discord webhook URL <code>DISCORD_WEBHOOK_URL</code></span>
+                  <input name="DISCORD_WEBHOOK_URL" type="password" autocomplete="off" data-optional></label>
+                <label><span>ntfy topic <code>NTFY_TOPIC</code></span>
+                  <input name="NTFY_TOPIC" type="text" placeholder="my-morning-paper" autocomplete="off" spellcheck="false" data-optional></label>
+              </div>
+            </fieldset>
+          </form>
+
+          <div class="code env-out">
+            <div class="code-head"><span>Your .env</span><button type="button" class="copy" data-copy="envout">Copy</button></div>
+            <pre id="envout" aria-label="Generated .env file"></pre>
+          </div>
+          <p class="note">Save it as <code>.env</code> in the project folder, then run <code>uv run localhost-times --list</code> to see what's switched on.</p>
+        </div>
+      </article>
+
+      <!-- Page 6: back cover -->
+      <article class="page back" id="p6" data-density="hard" aria-labelledby="h-colo">
+        <div class="sheet">
+          <div class="inner">
+            <p class="masthead" aria-hidden="true">The Localhost Times</p>
+            <hr class="rule">
+            <h2 class="hed" id="h-colo">Colophon</h2>
+            <p>Printed on localhost. Built for a friend for the DEV Hacktoberfest 2026 Weekend Challenge. MIT licensed.</p>
+            <p class="note">Set in UnifrakturMaguntia, Libre Caslon Text and Oswald. Pages turned by StPageFlip.</p>
+            <section class="box" aria-labelledby="h-corr">
+              <h3 id="h-corr">Corrections</h3>
+              <p>Spotted an error, or want your mail provider in the classifieds? Open an issue or a pull request on GitHub.</p>
+            </section>
+            <div class="cta">
+              <a class="btn primary" href="https://github.com/mohamedaminehamdi/the-localhost-times">Source on GitHub</a>
+              <a class="btn" href="demo/">Read the demo edition</a>
+            </div>
+            <p class="thirty" aria-hidden="true">— 30 —</p>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <nav class="controls" aria-label="Turn pages">
+      <button type="button" id="prev">‹ Previous</button>
+      <span id="indicator" aria-live="polite">Page 1 of 6</span>
+      <button type="button" id="next">Next ›</button>
+    </nav>
+    <p class="hint">Drag a page corner, swipe, or use the arrow keys.</p>
+  </div>
+  <p id="status" class="sr-only" role="status" aria-live="polite"></p>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var root = document.documentElement;
+  var book = document.getElementById('book');
+  var pages = Array.prototype.slice.call(book.querySelectorAll('.page'));
+  var statusEl = document.getElementById('status');
+  var pf = null;
+
+  /* ---------- Dateline ---------- */
+  var now = new Date();
+  document.querySelectorAll('[data-today]').forEach(function (el) {
+    el.textContent = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    el.setAttribute('datetime', now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0'));
+  });
+
+  /* ---------- Copy buttons ---------- */
+  function legacyCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;';
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    ta.remove();
+    if (!ok) throw new Error('copy failed');
+  }
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text).catch(function () { legacyCopy(text); });
+    }
+    return new Promise(function (resolve) { legacyCopy(text); resolve(); });
+  }
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-copy]');
+    if (!btn) return;
+    var src = document.getElementById(btn.getAttribute('data-copy'));
+    copyText(src.textContent).then(function () {
+      btn.textContent = 'Copied';
+      statusEl.textContent = 'Copied to clipboard.';
+    }, function () {
+      window.getSelection().selectAllChildren(src);
+      btn.textContent = 'Selected';
+      statusEl.textContent = 'Could not copy automatically. The text is selected; press Control C or Command C.';
+    }).then(function () {
+      btn.focus();
+      setTimeout(function () { btn.textContent = 'Copy'; }, 2000);
+    });
+  });
+
+  /* ---------- .env builder (client-side only) ---------- */
+  var form = document.getElementById('envform');
+  var out = document.getElementById('envout');
+  var voiceSel = form.elements.VOICE;
+
+  // python-dotenv: bare when safe, single quotes (no interpolation) otherwise, double quotes as a last resort.
+  function quote(v) {
+    if (/^[\w.,:\/@+\-=?&%~]*$/.test(v)) return v;
+    if (v.indexOf("'") === -1) return "'" + v + "'";
+    return '"' + v.replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"';
+  }
+
+  function renderEnv() {
+    form.querySelectorAll('[data-voice]').forEach(function (el) {
+      el.hidden = el.getAttribute('data-voice').split(' ').indexOf(voiceSel.value) === -1;
+    });
+    var lines = ['# The Localhost Times', '# Made in your browser. Nothing here was sent anywhere.', ''];
+    form.querySelectorAll('[data-section]').forEach(function (sec) {
+      var toggle = sec.querySelector('[data-toggle]');
+      var box = sec.querySelector('.fields');
+      var on = !toggle || toggle.checked;
+      if (toggle) box.hidden = !on;
+      if (!on) return;
+      lines.push('# ' + sec.getAttribute('data-section'));
+      box.querySelectorAll('input, select').forEach(function (f) {
+        if (f.closest('[hidden]')) return;
+        var v = f.value.replace(/[\r\n]+/g, ' ').trim();
+        if (v) lines.push(f.name + '=' + quote(v));
+        else lines.push((f.hasAttribute('data-optional') ? '# ' : '') + f.name + '=');
+      });
+      lines.push('');
+    });
+    out.textContent = lines.join('\n').replace(/\n+$/, '') + '\n';
+  }
+  form.addEventListener('input', renderEnv);
+  form.addEventListener('change', renderEnv);
+  form.addEventListener('submit', function (e) { e.preventDefault(); });
+  renderEnv();
+
+  /* ---------- Flipbook ---------- */
+  function stacked() { root.classList.remove('flip', 'ready'); }
+
+  function initFlip() {
+    var prev = document.getElementById('prev');
+    var next = document.getElementById('next');
+    var indicator = document.getElementById('indicator');
+    var classes = pages.map(function (p) { return p.className; });
+    var narrow = matchMedia('(max-width: 799px)').matches;
+    var stageW = book.parentElement.clientWidth;
+    var start = Math.max(0, pages.findIndex(function (p) { return '#' + p.id === location.hash; }));
+
+    try {
+      pf = new St.PageFlip(book, {
+        // Phones get a page shaped like their screen; desktops get a broadsheet spread.
+        width: narrow ? Math.max(260, stageW) : 550,
+        height: narrow ? Math.max(440, Math.round(window.innerHeight - 130)) : 760,
+        size: 'stretch',
+        minWidth: Math.min(280, stageW),
+        maxWidth: narrow ? 900 : 700,
+        minHeight: 380,
+        maxHeight: 2000,
+        showCover: true,
+        usePortrait: true,
+        mobileScrollSupport: true,   // lets long pages scroll by touch; quick horizontal swipes still turn
+        disableFlipByClick: true,    // only corner clicks turn pages, so clicks on copy and forms stay put
+        clickEventForward: true,
+        maxShadowOpacity: 0.5,
+        flippingTime: 800,
+        startPage: start
+      });
+
+      var update = function () {
+        var n = pf.getPageCount();
+        var i = pf.getCurrentPageIndex();
+        var spread = pf.getOrientation() === 'landscape' && i > 0 && i < n - 1;
+        var left = spread ? (i % 2 ? i : i - 1) : i;
+        var last = spread ? Math.min(left + 1, n - 1) : i;
+        indicator.textContent = last > left
+          ? 'Pages ' + (left + 1) + '–' + (last + 1) + ' of ' + n
+          : 'Page ' + (left + 1) + ' of ' + n;
+        prev.setAttribute('aria-disabled', String(left <= 0));
+        next.setAttribute('aria-disabled', String(last >= n - 1));
+      };
+
+      pf.on('init', function () { root.classList.add('ready'); update(); });
+      pf.on('flip', update);
+      pf.on('changeOrientation', update);
+      pf.loadFromHTML(pages);
+      setTimeout(function () { root.classList.add('ready'); }, 1500);
+
+      prev.addEventListener('click', function () { pf.flipPrev(); });
+      next.addEventListener('click', function () { pf.flipNext(); });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
+        if (e.target.closest && e.target.closest('input, select, textarea, [contenteditable]')) return;
+        if (e.key === 'ArrowRight') { e.preventDefault(); pf.flipNext(); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); pf.flipPrev(); }
+      });
+
+      // Index links turn to their page instead of jumping.
+      book.addEventListener('click', function (e) {
+        var a = e.target.closest('a[href^="#p"]');
+        if (!a) return;
+        var idx = pages.findIndex(function (p) { return '#' + p.id === a.getAttribute('href'); });
+        if (idx < 0) return;
+        e.preventDefault();
+        pf.flip(idx);
+      });
+
+      // Keep the library's drag handling away from links, buttons, form fields, code and scrollbars.
+      var interactive = 'a, button, input, select, textarea, label, pre, summary';
+      pages.forEach(function (p) {
+        ['mousedown', 'touchstart'].forEach(function (type) {
+          p.addEventListener(type, function (e) {
+            var t = e.target;
+            var onScrollbar = t.classList && t.classList.contains('sheet') && e.offsetX > t.clientWidth;
+            if (t.closest(interactive) || onScrollbar) e.stopPropagation();
+          }, { passive: true });
+        });
+      });
+    } catch (err) {
+      // Put the paper back together as plain, stacked pages.
+      if (window.console) console.error(err);
+      pf = null;
+      book.replaceChildren.apply(book, pages);
+      book.removeAttribute('style');
+      book.removeAttribute('class');
+      pages.forEach(function (p, i) { p.removeAttribute('style'); p.className = classes[i]; });
+      stacked();
+    }
+  }
+
+  if (root.classList.contains('flip')) {
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.js';
+    s.onload = function () {
+      if (window.St && St.PageFlip) initFlip(); else stacked();
+    };
+    s.onerror = stacked;
+    document.head.appendChild(s);
+    // Slow network: read the stacked paper rather than stare at an empty table.
+    setTimeout(function () {
+      if (!pf) { s.onload = null; stacked(); }
+    }, 6000);
+  }
+})();
+</script>
+</body>
+</html>

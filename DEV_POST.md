@@ -87,13 +87,13 @@ A broken source is logged and skipped. One flaky API should never cancel the mor
 
 **7. The paper turns.** The web edition and the landing page use [StPageFlip](https://github.com/Nodlik/StPageFlip): drag a corner and the page curls. You get two-page spreads on desktop, swipe on a phone and arrow keys everywhere. With `prefers-reduced-motion` it becomes a calm scrolling page. The emailed edition is the same set of pages as one column, because mail clients strip scripts.
 
-On my M3 MacBook Air, Gemma 4 (`gemma4:e4b`) prints a full edition in about a minute.
+On my fanless M3 MacBook Air, Gemma 4 (`gemma4:e4b`) prints a full edition in 70 to 90 seconds, before the kettle boils.
 
 ## Why Does Open Innovation Matter?
 
 Your inbox is the most private thing you own. It holds your bank's security alerts, your doctor, your landlord, your mum.
 
-Every "AI morning briefing" product I could find works the same way: connect your Google account, and their servers read your mail. For my friend, that was a deal-breaker, and I think they're right.
+The AI morning briefings I tried all work the same way: connect your Google account, and their servers read your mail. For my friend, that was a deal-breaker, and I think they're right.
 
 Open-weight models change that deal:
 
